@@ -11,8 +11,11 @@ public class FoodHolder {
 
   public FoodHolder(SimulationConfiguration simulationConfiguration) {
     this.foodList = new ArrayList<>();
-    for (int i = 0; i < simulationConfiguration.getFoodCount(); i++) {
+    generateFood(simulationConfiguration);
+  }
 
+  public void generateFood(SimulationConfiguration simulationConfiguration) {
+    for (int i = 0; i < simulationConfiguration.getFoodCount(); i++) {
       this.foodList.add(new Food(simulationConfiguration));
     }
   }

@@ -42,6 +42,18 @@ public class SimulationConfiguration {
 
   private Integer canvasHeight;
 
+  private Integer minRequiredMatingFoodCount;
+
+  private Integer maxRequiredMatingFoodCount;
+
+  private Integer minRequiredMatingAgeSeconds;
+
+  private Integer maxRequiredMatingAgeSeconds;
+
+  private Integer minReproductionCoolDown;
+
+  private Integer maxReproductionCoolDown;
+
   public SimulationConfiguration(Integer canvasHeight, Integer canvasWidth) {
     this.tickPerSecond = DEFAULT_TICKS_PER_SECOND;
     this.startingGenerationCount = DEFAULT_STARTING_GENERATION_COUNT;
@@ -61,159 +73,131 @@ public class SimulationConfiguration {
     this.maxInitialCreatureSize = DEFAULT_MAX_INITIAL_CREATURE_SIZE;
     this.minSpeedPixels = DEFAULT_MIN_SPEED_PIXELS;
     this.maxSpeedPixels = DEFAULT_MAX_SPEED_PIXELS;
+
+    this.minRequiredMatingFoodCount = DEFAULT_MIN_REQUIRED_MATING_FOOD_COUNT;
+    this.maxRequiredMatingFoodCount = DEFAULT_MAX_REQUIRED_MATING_FOOD_COUNT;
+    this.minRequiredMatingAgeSeconds = DEFAULT_MIN_REQUIRED_MATING_AGE_SECONDS;
+    this.maxRequiredMatingAgeSeconds = DEFAULT_MAX_REQUIRED_MATING_AGE_SECONDS;
+    this.minReproductionCoolDown = DEFAULT_MIN_REPRODUCTION_COOL_DOWN_SECONDS;
+    this.maxReproductionCoolDown = DEFAULT_MAX_REPRODUCTION_COOL_DOWN_SECONDS;
+
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
+  }
+
+  public Integer getMinRequiredMatingFoodCount() {
+    return minRequiredMatingFoodCount;
+  }
+
+  public Integer getMaxRequiredMatingFoodCount() {
+    return maxRequiredMatingFoodCount;
+  }
+
+  public Integer getMinRequiredMatingAgeSeconds() {
+    return minRequiredMatingAgeSeconds;
+  }
+
+  public Integer getMaxRequiredMatingAgeSeconds() {
+    return maxRequiredMatingAgeSeconds;
+  }
+
+  public Integer getMinReproductionCoolDown() {
+    return minReproductionCoolDown;
+  }
+
+  public Integer getMaxReproductionCoolDown() {
+    return maxReproductionCoolDown;
   }
 
   public Integer getTickPerSecond() {
     return tickPerSecond;
   }
 
-  public void setTickPerSecond(Integer tickPerSecond) {
-    this.tickPerSecond = tickPerSecond;
-  }
 
   public Integer getStartingGenerationCount() {
     return startingGenerationCount;
-  }
-
-  public void setStartingGenerationCount(Integer startingGenerationCount) {
-    this.startingGenerationCount = startingGenerationCount;
   }
 
   public Integer getFoodFrequencySeconds() {
     return foodFrequencySeconds;
   }
 
-  public void setFoodFrequencySeconds(Integer foodFrequencySeconds) {
-    this.foodFrequencySeconds = foodFrequencySeconds;
-  }
-
   public Integer getFoodCount() {
     return foodCount;
   }
 
-  public void setFoodCount(Integer foodCount) {
-    this.foodCount = foodCount;
-  }
 
   public Integer getCreatureStaringEnergy() {
     return creatureStaringEnergy;
   }
 
-  public void setCreatureStaringEnergy(Integer creatureStaringEnergy) {
-    this.creatureStaringEnergy = creatureStaringEnergy;
-  }
 
   public Double getMaxXPosition() {
     return maxXPosition;
-  }
-
-  public void setMaxXPosition(Double maxXPosition) {
-    this.maxXPosition = maxXPosition;
   }
 
   public Double getMaxYPosition() {
     return maxYPosition;
   }
 
-  public void setMaxYPosition(Double maxYPosition) {
-    this.maxYPosition = maxYPosition;
-  }
 
   public Double getMaxFoodNutritionValue() {
     return maxFoodNutritionValue;
   }
 
-  public void setMaxFoodNutritionValue(Double maxFoodNutritionValue) {
-    this.maxFoodNutritionValue = maxFoodNutritionValue;
-  }
 
   public Double getMinFoodNutritionValue() {
     return minFoodNutritionValue;
   }
 
-  public void setMinFoodNutritionValue(Double minFoodNutritionValue) {
-    this.minFoodNutritionValue = minFoodNutritionValue;
-  }
 
   public Integer getMinVisionPixels() {
     return minVisionPixels;
   }
 
-  public void setMinVisionPixels(Integer minVisionPixels) {
-    this.minVisionPixels = minVisionPixels;
-  }
 
   public Integer getMaxVisionPixels() {
     return maxVisionPixels;
   }
 
-  public void setMaxVisionPixels(Integer maxVisionPixels) {
-    this.maxVisionPixels = maxVisionPixels;
-  }
 
   public Double getMinEnergyDecayPerTick() {
     return minEnergyDecayPerTick;
   }
 
-  public void setMinEnergyDecayPerTick(Double minEnergyDecayPerTick) {
-    this.minEnergyDecayPerTick = minEnergyDecayPerTick;
-  }
 
   public Double getMaxEnergyDecayPerTick() {
     return maxEnergyDecayPerTick;
   }
 
-  public void setMaxEnergyDecayPerTick(Double maxEnergyDecayPerTick) {
-    this.maxEnergyDecayPerTick = maxEnergyDecayPerTick;
-  }
 
   public Integer getMinInitialCreatureSize() {
     return minInitialCreatureSize;
   }
 
-  public void setMinInitialCreatureSize(Integer minInitialCreatureSize) {
-    this.minInitialCreatureSize = minInitialCreatureSize;
-  }
 
   public Integer getMaxInitialCreatureSize() {
     return maxInitialCreatureSize;
-  }
-
-  public void setMaxInitialCreatureSize(Integer maxInitialCreatureSize) {
-    this.maxInitialCreatureSize = maxInitialCreatureSize;
   }
 
   public Double getMinSpeedPixels() {
     return minSpeedPixels;
   }
 
-  public void setMinSpeedPixels(Double minSpeedPixels) {
-    this.minSpeedPixels = minSpeedPixels;
-  }
 
   public Double getMaxSpeedPixels() {
     return maxSpeedPixels;
   }
 
-  public void setMaxSpeedPixels(Double maxSpeedPixels) {
-    this.maxSpeedPixels = maxSpeedPixels;
-  }
 
   public Integer getCanvasWidth() {
     return canvasWidth;
   }
 
-  public void setCanvasWidth(Integer canvasWidth) {
-    this.canvasWidth = canvasWidth;
-  }
 
   public Integer getCanvasHeight() {
     return canvasHeight;
   }
 
-  public void setCanvasHeight(Integer canvasHeight) {
-    this.canvasHeight = canvasHeight;
-  }
+
 }

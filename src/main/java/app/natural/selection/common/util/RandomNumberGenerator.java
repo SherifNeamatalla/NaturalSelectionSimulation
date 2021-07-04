@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RandomNumberGenerator {
 
   public static Integer generateRandomInteger(Integer min, Integer max) {
-    return ThreadLocalRandom.current().nextInt(min, max);
+    return ThreadLocalRandom.current().nextInt(min, max + 1);
   }
 
   public static Double generateRandomDouble(Double min, Double max) {

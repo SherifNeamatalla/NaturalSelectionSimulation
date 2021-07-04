@@ -1,9 +1,9 @@
 package app.natural.selection.algorithm;
 
 import app.natural.selection.algorithm.configuration.AlgorithmConfiguration;
-import app.natural.selection.algorithm.controllers.interfaces.IMutationController;
 import app.natural.selection.algorithm.controllers.interfaces.IReproductionController;
 import app.natural.selection.algorithm.factories.AlgorithmControllersFactory;
+import app.natural.selection.appcontroller.model.AppState;
 import app.natural.selection.common.model.creature.Creature;
 import app.natural.selection.common.model.creature.CreatureAction;
 import app.natural.selection.common.model.food.Food;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class AlgorithmController {
 
-  private IMutationController mutationController;
   private IReproductionController reproductionController;
 
   private final AlgorithmConfiguration configuration;
@@ -30,7 +29,6 @@ public class AlgorithmController {
   }
 
   private void initControllers() {
-    mutationController = AlgorithmControllersFactory.createMutationController(configuration.getMutationControllerType());
     reproductionController = AlgorithmControllersFactory.createReproductionController(configuration.getReproductionControllerType());
   }
 
@@ -50,37 +48,42 @@ public class AlgorithmController {
     }
   }
 
-  private void onCreatureAteFood(Creature actionTakingCreature,FoodHolder foodHolder, Food ateFood) {
+  private void onCreatureAteFood(Creature actionTakingCreature, FoodHolder foodHolder, Food ateFood) {
     Optional<Food> ateFoodOptional = foodHolder.getFoodList().stream().filter(food -> food.getId().equals(ateFood.getId())).findFirst();
 
     ateFoodOptional.ifPresent((foundFood) -> {
-      actionTakingCreature.setEnergy(actionTakingCreature.getEnergy() + foundFood.getNutritionValue());
       foodHolder.getFoodList().remove(foundFood);
-      actionTakingCreature.setEnergy(Math.min(100, actionTakingCreature.getEnergy()));
+      actionTakingCreature.eatFood(foundFood);
     });
   }
 
-  private void onCreatureDead(Generation generation,Creature actionTakingCreature) {
-//    generation.setCreatures(generation.getCreatures().stream().filter(creature ->
-//            !creature.getId().equals(actionTakingCreature.getId())).collect(Collectors.toList()));
+  private void onCreatureDead(Generation generation, Creature actionTakingCreature) {
+    generation.setCreatures(generation.getCreatures().stream().filter(creature ->
+            !creature.getId().equals(actionTakingCreature.getId())).collect(Collectors.toList()));
   }
 
-  private void onReproduction(Generation generation,Creature actionTakingCreature, Creature loveInterest) {
-    List<Creature> offSpring = reproductionController.reproduceNewCreatures(actionTakingCreature,loveInterest);
-    offSpring.forEach(creature -> mutationController.mutateCreature(creature,configuration.getMutationRate()));
+  private void onReproduction(Generation generation, Creature actionTakingCreature, Creature loveInterest) {
+    List<Creature> offSpring = reproductionController.reproduceNewCreatures(actionTakingCreature, loveInterest);
+    offSpring.forEach(creature -> creature.mutate(configuration.getMutationRate()));
     generation.getCreatures().addAll(offSpring);
+    actionTakingCreature.mated();
+    loveInterest.mated();
+    System.out.println("Mated!!");
+
   }
 
-  public void tick(Generation generation, FoodHolder foodHolder) {
-              List<CreatureAction> creatureActions = Collections.synchronizedList(new
-                      ArrayList<>());
-              generation.getCreatures()
-                  .forEach(
-                      creature -> {
-                        creatureActions.add(creature.tick(generation, foodHolder));
-                      });
+  public void tick(AppState appState) {
+    Generation generation = appState.getGeneration();
+    FoodHolder foodHolder = appState.getFoodHolder();
+    List<CreatureAction> creatureActions = Collections.synchronizedList(new
+            ArrayList<>());
+    generation.getCreatures()
+            .forEach(
+                    creature -> {
+                      creatureActions.add(creature.tick(generation, foodHolder));
+                    });
 
-              handleCreatureActions(generation,foodHolder,creatureActions);
-
+    handleCreatureActions(generation, foodHolder, creatureActions);
+    appState.generateFood();
   }
 }

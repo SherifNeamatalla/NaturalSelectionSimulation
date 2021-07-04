@@ -4,7 +4,7 @@ import app.natural.selection.algorithm.AlgorithmController;
 import app.natural.selection.appcontroller.config.AppInitConfig;
 import app.natural.selection.appcontroller.model.AppState;
 import app.natural.selection.simulation.controller.SimulationController;
-import view.common.controller.ViewController;
+import app.natural.selection.view.common.controller.ViewController;
 
 public class AppController {
 
@@ -46,12 +46,12 @@ public class AppController {
   }
 
   public void onSaveClicked() {
-    AppUtilFunctions.saveAppState();
+    AppStatisticCalculator.saveAppState();
   }
 
   public void onTick() {
-    algorithmController.tick(appState.getGeneration(), appState.getFoodHolder());
-    AppUtilFunctions.updateStatistic(appState.getGeneration(), appState.getStatistic());
+    algorithmController.tick(appState);
+    AppStatisticCalculator.updateStatistic(appState.getGeneration(), appState.getStatistic());
     viewController.draw(
             appState);
   }

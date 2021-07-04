@@ -9,6 +9,11 @@ public class Position {
 
   private Double y;
 
+  public Position(Position position) {
+    this.x = position.getX();
+    this.y = position.getY();
+  }
+
   public Position(SimulationConfiguration simulationConfiguration) {
     this.x =
             RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getCanvasWidth().doubleValue());

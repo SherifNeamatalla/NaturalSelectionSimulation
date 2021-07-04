@@ -34,6 +34,10 @@ public class CreatureAction {
     return new CreatureAction(creature, CreatureActionType.DEAD, null, null);
   }
 
+  public static CreatureAction reproduction(Creature creature, Creature loveInterest) {
+    return new CreatureAction(creature, CreatureActionType.REPRODUCTION, loveInterest, null);
+  }
+
   public Creature getActionTakingCreature() {
     return actionTakingCreature;
   }

@@ -23,7 +23,6 @@ public class AlgorithmController {
 
   private final AlgorithmConfiguration configuration;
 
-  private int count = 0;
 
   public AlgorithmController(AlgorithmConfiguration configuration) {
     this.configuration = configuration;
@@ -52,18 +51,18 @@ public class AlgorithmController {
   }
 
   private void onCreatureAteFood(Creature actionTakingCreature,FoodHolder foodHolder, Food ateFood) {
-    Optional<Food> ateFoodOptional = foodHolder.getFoodList().stream().filter(food -> !food.getId().equals(ateFood.getId())).findFirst();
+    Optional<Food> ateFoodOptional = foodHolder.getFoodList().stream().filter(food -> food.getId().equals(ateFood.getId())).findFirst();
 
-    ateFoodOptional.ifPresentOrElse((foundFood)->{
-      actionTakingCreature.setEnergy(actionTakingCreature.getEnergy()+foundFood.getNutritionValue());
-      foodHolder.setFoodList(foodHolder.getFoodList().stream().filter(food -> !food.getId().equals(foundFood.getId())).collect(Collectors.toList()));
-    },()->{System.out.println("Missed!");
-        });
+    ateFoodOptional.ifPresent((foundFood) -> {
+      actionTakingCreature.setEnergy(actionTakingCreature.getEnergy() + foundFood.getNutritionValue());
+      foodHolder.getFoodList().remove(foundFood);
+      actionTakingCreature.setEnergy(Math.min(100, actionTakingCreature.getEnergy()));
+    });
   }
 
   private void onCreatureDead(Generation generation,Creature actionTakingCreature) {
-    generation.setCreatures(generation.getCreatures().stream().filter(creature ->
-            !creature.getId().equals(actionTakingCreature.getId())).collect(Collectors.toList()));
+//    generation.setCreatures(generation.getCreatures().stream().filter(creature ->
+//            !creature.getId().equals(actionTakingCreature.getId())).collect(Collectors.toList()));
   }
 
   private void onReproduction(Generation generation,Creature actionTakingCreature, Creature loveInterest) {
@@ -73,7 +72,6 @@ public class AlgorithmController {
   }
 
   public void tick(Generation generation, FoodHolder foodHolder) {
-    count++;
               List<CreatureAction> creatureActions = Collections.synchronizedList(new
                       ArrayList<>());
               generation.getCreatures()

@@ -29,6 +29,11 @@ public class Creature {
 
   private final ICreatureLogicHandler creatureLogicHandler;
 
+  private final Integer maxX;
+
+  private final Integer maxY;
+
+
   public Creature(SimulationConfiguration simulationConfiguration) {
     this.id = UUID.randomUUID();
     this.position = new Position(simulationConfiguration);
@@ -38,6 +43,8 @@ public class Creature {
     this.energy = simulationConfiguration.getCreatureStaringEnergy().doubleValue();
     this.horizontalMovingDirection = MovingDirection.STAY;
     this.verticalMovingDirection = MovingDirection.STAY;
+    this.maxX = simulationConfiguration.getCanvasWidth();
+    this.maxY = simulationConfiguration.getCanvasHeight();
   }
 
   public UUID getId() {
@@ -78,12 +85,23 @@ public class Creature {
 
   public void move() {
     this.position.setX(
-        this.position.getX()
-            + this.horizontalMovingDirection.intValue()
-                * this.creatureProperties.getPixelsPerTick());
+            this.position.getX()
+                    + this.horizontalMovingDirection.intValue()
+                    * this.creatureProperties.getPixelsPerTick());
     this.position.setY(
-        this.position.getY()
-            + this.verticalMovingDirection.intValue()
-                * this.creatureProperties.getPixelsPerTick());
+            this.position.getY()
+                    + this.verticalMovingDirection.intValue()
+                    * this.creatureProperties.getPixelsPerTick());
+
+    if (position.getX() >= this.maxX - 100 || position.getX() <= 0) {
+      position.setX(Math.min(Math.max(0, position.getX()), this.maxX));
+      horizontalMovingDirection = MovingDirection.fromIntValue(-1 * horizontalMovingDirection.intValue());
+    }
+
+    if (position.getY() >= this.maxY - 100 || position.getY() <= 0) {
+      position.setY(Math.min(Math.max(0, position.getY()), this.maxY));
+
+      verticalMovingDirection = MovingDirection.fromIntValue(-1 * verticalMovingDirection.intValue());
+    }
   }
 }

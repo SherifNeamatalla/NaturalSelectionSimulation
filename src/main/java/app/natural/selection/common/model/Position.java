@@ -11,9 +11,9 @@ public class Position {
 
   public Position(SimulationConfiguration simulationConfiguration) {
     this.x =
-        RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getMaxXPosition());
+            RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getCanvasWidth().doubleValue());
     this.y =
-        RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getMaxYPosition());
+            RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getCanvasHeight().doubleValue());
   }
 
   public Double getX() {

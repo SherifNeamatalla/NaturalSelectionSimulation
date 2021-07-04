@@ -38,7 +38,11 @@ public class SimulationConfiguration {
 
   private Double maxSpeedPixels;
 
-  public SimulationConfiguration() {
+  private Integer canvasWidth;
+
+  private Integer canvasHeight;
+
+  public SimulationConfiguration(Integer canvasHeight, Integer canvasWidth) {
     this.tickPerSecond = DEFAULT_TICKS_PER_SECOND;
     this.startingGenerationCount = DEFAULT_STARTING_GENERATION_COUNT;
     this.creatureStaringEnergy = DEFAULT_CREATURE_STARTING_ENERGY;
@@ -57,6 +61,8 @@ public class SimulationConfiguration {
     this.maxInitialCreatureSize = DEFAULT_MAX_INITIAL_CREATURE_SIZE;
     this.minSpeedPixels = DEFAULT_MIN_SPEED_PIXELS;
     this.maxSpeedPixels = DEFAULT_MAX_SPEED_PIXELS;
+    this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
   }
 
   public Integer getTickPerSecond() {
@@ -193,5 +199,21 @@ public class SimulationConfiguration {
 
   public void setMaxSpeedPixels(Double maxSpeedPixels) {
     this.maxSpeedPixels = maxSpeedPixels;
+  }
+
+  public Integer getCanvasWidth() {
+    return canvasWidth;
+  }
+
+  public void setCanvasWidth(Integer canvasWidth) {
+    this.canvasWidth = canvasWidth;
+  }
+
+  public Integer getCanvasHeight() {
+    return canvasHeight;
+  }
+
+  public void setCanvasHeight(Integer canvasHeight) {
+    this.canvasHeight = canvasHeight;
   }
 }

@@ -4,7 +4,7 @@ import app.natural.selection.algorithm.configuration.AlgorithmConfiguration;
 import app.natural.selection.common.model.food.FoodHolder;
 import app.natural.selection.common.model.generation.Generation;
 import app.natural.selection.simulation.config.SimulationConfiguration;
-import app.natural.selection.view.configuration.ViewConfiguration;
+import view.common.configuration.ViewConfiguration;
 
 import java.time.LocalDateTime;
 
@@ -26,9 +26,9 @@ public class AppState {
 
   public AppState() {
     this.startingDateTime = LocalDateTime.now();
-    this.simulationConfiguration = new SimulationConfiguration();
-    this.algorithmConfiguration = new AlgorithmConfiguration();
     this.viewConfiguration = new ViewConfiguration();
+    this.simulationConfiguration = new SimulationConfiguration(viewConfiguration.getCanvasHeight(), viewConfiguration.getCanvasWidth());
+    this.algorithmConfiguration = new AlgorithmConfiguration();
     this.statistic = new Statistic();
     this.generation = new Generation(this.simulationConfiguration);
     this.foodHolder = new FoodHolder(this.simulationConfiguration);

@@ -28,7 +28,7 @@ public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
       if (distance > creature.getCreatureProperties().getVisionPixels()) continue;
 
       // Inside the creature, creature eats it
-            if (distance <= 10) {
+            if (distance <= creature.getCreatureProperties().getSizePixels()) {
               return CreatureAction.eatFoodAction(creature, food);
             }
       if (distance < minDistance) {

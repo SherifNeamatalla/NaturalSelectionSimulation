@@ -1,9 +1,10 @@
 package app.natural.selection.appcontroller;
 
 import app.natural.selection.algorithm.AlgorithmController;
+import app.natural.selection.appcontroller.config.AppInitConfig;
 import app.natural.selection.appcontroller.model.AppState;
 import app.natural.selection.simulation.controller.SimulationController;
-import app.natural.selection.view.controller.ViewController;
+import view.common.controller.ViewController;
 
 public class AppController {
 
@@ -15,11 +16,11 @@ public class AppController {
 
   private final AppState appState;
 
-  public AppController() {
+  public AppController(AppInitConfig appInitConfig) {
     this.appState = new AppState();
-    this.viewController = new ViewController(this, this.appState.getViewConfiguration());
+    this.viewController = new ViewController(this, this.appState.getViewConfiguration(), appInitConfig);
     this.simulationController =
-        new SimulationController(this);
+            new SimulationController(appInitConfig, this, appState.getSimulationConfiguration());
     this.algorithmController = new AlgorithmController(this.appState.getAlgorithmConfiguration());
   }
 
@@ -52,7 +53,7 @@ public class AppController {
     algorithmController.tick(appState.getGeneration(), appState.getFoodHolder());
     AppUtilFunctions.updateStatistic(appState.getGeneration(), appState.getStatistic());
     viewController.draw(
-        appState.getGeneration(), appState.getFoodHolder(), appState.getStatistic());
+            appState);
   }
 
   public void launch() {

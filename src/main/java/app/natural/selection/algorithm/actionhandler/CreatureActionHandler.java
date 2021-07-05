@@ -17,11 +17,12 @@ public class CreatureActionHandler {
 
     public static void handleCreatureActions(
             Population population, FoodHolder foodHolder, List<CreatureAction> creatureActions,
-            IReproductionController reproductionController, AlgorithmConfiguration configuration) {
+            IReproductionController reproductionController, AlgorithmConfiguration configuration,
+            Long currentTick) {
         for (CreatureAction creatureAction : creatureActions) {
             switch (creatureAction.getType()) {
                 case REPRODUCTION -> onReproduction(population, creatureAction.getActionTakingCreature(), creatureAction.getLoveInterest(),
-                        reproductionController, configuration);
+                        reproductionController, configuration, currentTick);
 
                 case DEAD -> onCreatureDead(population, creatureAction.getActionTakingCreature());
 
@@ -46,12 +47,13 @@ public class CreatureActionHandler {
     }
 
     private static void onReproduction(Population population, Creature actionTakingCreature, Creature loveInterest,
-                                       IReproductionController reproductionController, AlgorithmConfiguration configuration) {
-        List<Creature> offSpring = reproductionController.reproduceNewCreatures(actionTakingCreature, loveInterest);
+                                       IReproductionController reproductionController, AlgorithmConfiguration configuration,
+                                       Long currentTick) {
+        List<Creature> offSpring = reproductionController.reproduceNewCreatures(actionTakingCreature, loveInterest, currentTick);
         offSpring.forEach(creature -> creature.mutate(configuration.getMutationRate()));
         population.getCreatures().addAll(offSpring);
-        actionTakingCreature.mated();
-        loveInterest.mated();
+        actionTakingCreature.mated(currentTick);
+        loveInterest.mated(currentTick);
         AppLogger.logMessage("Mated!!");
 
     }

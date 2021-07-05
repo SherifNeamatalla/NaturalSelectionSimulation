@@ -30,15 +30,16 @@ public class AlgorithmController {
     public List<CreatureAction> tick(AppState appState) {
         Population population = appState.getPopulation();
         FoodHolder foodHolder = appState.getFoodHolder();
+        Long currentTick = appState.getCurrentTickCount();
         List<CreatureAction> creatureActions = Collections.synchronizedList(new
                 ArrayList<>());
         population.getCreatures()
                 .forEach(
                         creature -> {
-                            creatureActions.add(creature.tick(population, foodHolder));
+                            creatureActions.add(creature.tick(population, foodHolder, currentTick));
                         });
 
-        handleCreatureActions(population, foodHolder, creatureActions, reproductionController, configuration);
+        handleCreatureActions(population, foodHolder, creatureActions, reproductionController, configuration, currentTick);
         appState.generateFood();
 
         return creatureActions;

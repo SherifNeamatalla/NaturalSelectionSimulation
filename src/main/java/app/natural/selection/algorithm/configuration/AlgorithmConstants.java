@@ -12,9 +12,9 @@ public class AlgorithmConstants {
 
 
   public static final Integer DEFAULT_TICKS_PER_SECOND = 60;
-  public static final Integer DEFAULT_STARTING_POPULATION_COUNT = 1000;
+  public static final Integer DEFAULT_STARTING_POPULATION_COUNT = 5;
 
-  public static final Integer DEFAULT_FOOD_FREQUENCY_SECONDS = 5;
+  public static final Integer DEFAULT_FOOD_FREQUENCY_TICKS = 100;
   public static final Integer DEFAULT_FOOD_COUNT = 100;
 
   public static final Double DEFAULT_MAX_X_POSITION = 1024.0;

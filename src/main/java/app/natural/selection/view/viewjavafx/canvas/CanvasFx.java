@@ -59,10 +59,25 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
     else if (creature.getEnergy() < 10) gc.setFill(YELLOW);
     else if (creature.getEnergy() < 50) gc.setFill(ORANGE);
     else gc.setFill(SILVER);
+    gc.fillText(
+            ""
+                    + String.format("%.2f", creature.getEnergy())
+                    + " "
+                    + String.format("%d", creature.getCreatureProperties().getSizePixels())
+                    + " "
+                    + String.format("%d", creature.getCreatureProperties().getVisionPixels())
+                    + " "
+                    + String.format("%.2f", creature.getCreatureProperties().getEnergyDecayPerTick()),
+            creature.getPosition().getX() - 10,
+            creature.getPosition().getY());
     gc.fillOval(
-        creature.getPosition().getX(),
-        creature.getPosition().getY(),
-        creature.getCreatureProperties().getSizePixels(),
-        creature.getCreatureProperties().getSizePixels());
+            creature.getPosition().getX(),
+            creature.getPosition().getY(),
+            creature.getCreatureProperties().getSizePixels(),
+            creature.getCreatureProperties().getSizePixels());
+    gc.fillText(
+            creature.getId().toString(),
+            creature.getPosition().getX(),
+            creature.getPosition().getY() + 40);
   }
 }

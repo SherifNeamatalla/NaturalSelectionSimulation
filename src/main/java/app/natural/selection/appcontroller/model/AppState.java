@@ -2,17 +2,12 @@ package app.natural.selection.appcontroller.model;
 
 import app.natural.selection.algorithm.configuration.AlgorithmConfiguration;
 import app.natural.selection.algorithm.configuration.AlgorithmParameters;
+import app.natural.selection.appcontroller.logger.AppLogger;
 import app.natural.selection.common.model.food.FoodHolder;
 import app.natural.selection.common.model.population.Population;
 import app.natural.selection.view.common.configuration.ViewConfiguration;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 public class AppState {
-
-    private final LocalDateTime startingDateTime;
-
 
     private final Population population;
 
@@ -26,12 +21,14 @@ public class AppState {
 
     private final ViewConfiguration viewConfiguration;
 
-    private LocalDateTime lastTimeGeneratingFood;
+    private Long totalTicks;
+
+    private Long lastTickGeneratingFood;
 
 
     public AppState() {
-        this.startingDateTime = LocalDateTime.now();
-        this.lastTimeGeneratingFood = LocalDateTime.now();
+        this.totalTicks = 0L;
+        this.lastTickGeneratingFood = 0L;
         this.viewConfiguration = new ViewConfiguration();
         this.algorithmParameters = new AlgorithmParameters(viewConfiguration.getCanvasHeight(), viewConfiguration.getCanvasWidth());
         this.algorithmConfiguration = new AlgorithmConfiguration();
@@ -42,11 +39,11 @@ public class AppState {
 
     // Generates food only if it's the right time to do so using simulationConfiguration.foodFrequency
     public void generateFood() {
-        long durationSinceLastFood = Math.abs(Duration.between(lastTimeGeneratingFood, LocalDateTime.now()).getSeconds());
-
-        if (durationSinceLastFood > algorithmParameters.getFoodFrequencySeconds()) {
+        long durationSinceLastFood = totalTicks - lastTickGeneratingFood;
+        if (durationSinceLastFood == algorithmParameters.getFoodFrequencyTicks()) {
             foodHolder.generateFood(algorithmParameters);
-            lastTimeGeneratingFood = LocalDateTime.now();
+            lastTickGeneratingFood = totalTicks;
+            AppLogger.logMessage("Generating food for tick: " + totalTicks);
         }
 
     }
@@ -55,7 +52,7 @@ public class AppState {
         return population;
     }
 
-    public AlgorithmParameters getSimulationConfiguration() {
+    public AlgorithmParameters getAlgorithmParameters() {
         return algorithmParameters;
     }
 
@@ -75,7 +72,15 @@ public class AppState {
         return foodHolder;
     }
 
-    public LocalDateTime getStartingDateTime() {
-        return startingDateTime;
+    public Long getTotalTicks() {
+        return totalTicks;
+    }
+
+    public void incrementTickCount() {
+        this.totalTicks++;
+    }
+
+    public Long getCurrentTickCount() {
+        return totalTicks;
     }
 }

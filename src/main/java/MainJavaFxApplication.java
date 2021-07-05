@@ -14,6 +14,6 @@ public class MainJavaFxApplication extends Application {
     AppController appController =
         new AppController(new AppInitialConfiguration(FrontendFramework.JAVAFX, primaryStage));
 
-
+    appController.launch();
   }
 }

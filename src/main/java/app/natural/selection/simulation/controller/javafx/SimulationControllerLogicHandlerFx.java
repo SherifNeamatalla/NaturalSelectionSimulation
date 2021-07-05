@@ -1,7 +1,7 @@
 package app.natural.selection.simulation.controller.javafx;
 
-import app.natural.selection.appcontroller.AppController;
 import app.natural.selection.algorithm.configuration.AlgorithmParameters;
+import app.natural.selection.appcontroller.AppController;
 import app.natural.selection.simulation.controller.interfaces.ISimulationControllerLogicHandler;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -13,7 +13,6 @@ public class SimulationControllerLogicHandlerFx implements ISimulationController
 
   private final AppController appController;
   private final AlgorithmParameters algorithmParameters;
-  private Integer currentSpeed = 1;
 
   public SimulationControllerLogicHandlerFx(
       AppController appController, AlgorithmParameters algorithmParameters) {
@@ -46,32 +45,16 @@ public class SimulationControllerLogicHandlerFx implements ISimulationController
   }
 
   @Override
-  public void increaseSimulationSpeed() {
-    this.timeline.stop();
-    currentSpeed *= 2;
+  public void refreshSimulation() {
+    stopSimulation();
     initKeyframes();
     startSimulation();
-  }
-
-  @Override
-  public void decreaseSimulationSpeed() {
-    if (currentSpeed != 1) {
-      this.timeline.stop();
-      currentSpeed /= 2;
-      initKeyframes();
-      startSimulation();
-    }
-  }
-
-  @Override
-  public int getCurrentSimulationSpeed() {
-    return currentSpeed;
   }
 
   private KeyFrame createKeyFrame() {
     return
             new KeyFrame(
-                    Duration.millis(algorithmParameters.getTickPerSecond() / currentSpeed),
+                    Duration.millis(1000 / algorithmParameters.getTickPerSecond()),
                     actionEvent -> {
                       this.appController.onTick();
                     });

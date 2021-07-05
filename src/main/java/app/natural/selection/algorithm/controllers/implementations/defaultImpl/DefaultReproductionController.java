@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultReproductionController implements IReproductionController {
-  @Override
-  public List<Creature> reproduceNewCreatures(Creature parent1, Creature parent2) {
-    List<Creature> offSpring = new ArrayList<>();
+    @Override
+    public List<Creature> reproduceNewCreatures(Creature parent1, Creature parent2, Long currentTick) {
+        List<Creature> offSpring = new ArrayList<>();
 
-    offSpring.add(new Creature(parent1, parent2));
-    offSpring.add(new Creature(parent2, parent1));
+        offSpring.add(new Creature(parent1, parent2, currentTick));
+        offSpring.add(new Creature(parent2, parent1, currentTick));
 
-    return offSpring;
-  }
+        return offSpring;
+    }
 }

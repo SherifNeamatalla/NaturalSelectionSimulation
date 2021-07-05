@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IReproductionController {
 
-  List<Creature> reproduceNewCreatures(Creature parent1, Creature parent2);
+  List<Creature> reproduceNewCreatures(Creature parent1, Creature parent2, Long currentTick);
 }

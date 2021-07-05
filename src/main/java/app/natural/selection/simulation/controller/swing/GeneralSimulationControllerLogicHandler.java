@@ -32,18 +32,11 @@ public class GeneralSimulationControllerLogicHandler implements ISimulationContr
     AppLogger.logMessage("Pausing");
     gameLoopRunnable.pause();
   }
-
+  @Override
+  public void refreshSimulation(){
+  }
   public void stopSimulation() {
     gameLoopRunnable.pause();
-  }
-
-  public void increaseSimulationSpeed() {}
-
-  public void decreaseSimulationSpeed() {}
-
-  @Override
-  public int getCurrentSimulationSpeed() {
-    return 0;
   }
 
   /** Event emitters */

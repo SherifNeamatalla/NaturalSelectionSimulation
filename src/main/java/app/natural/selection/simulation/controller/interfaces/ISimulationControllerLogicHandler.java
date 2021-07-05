@@ -8,9 +8,6 @@ public interface ISimulationControllerLogicHandler {
 
   void stopSimulation();
 
-  void increaseSimulationSpeed();
+  void refreshSimulation();
 
-  void decreaseSimulationSpeed();
-
-  int getCurrentSimulationSpeed();
 }

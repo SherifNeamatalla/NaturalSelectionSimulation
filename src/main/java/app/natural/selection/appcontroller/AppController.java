@@ -23,7 +23,7 @@ public class AppController {
         this.appState = new AppState();
         this.viewController = new ViewController(this, this.appState.getViewConfiguration(), appInitialConfiguration);
         this.simulationController =
-                new SimulationController(appInitialConfiguration, this, appState.getSimulationConfiguration());
+                new SimulationController(appInitialConfiguration, this, appState.getAlgorithmParameters());
         this.algorithmController = new AlgorithmController(this.appState.getAlgorithmConfiguration());
     }
 
@@ -43,11 +43,13 @@ public class AppController {
     }
 
     public void onIncreaseSpeedClicked() {
-        simulationController.increaseSimulationSpeed();
+        appState.getAlgorithmParameters().increaseTickPerSecond();
+        simulationController.onSpeedChanged();
     }
 
     public void onDecreaseSpeedClicked() {
-        simulationController.decreaseSimulationSpeed();
+        appState.getAlgorithmParameters().decreaseTickPerSecond();
+        simulationController.onSpeedChanged();
     }
 
     public void onSaveClicked() {
@@ -57,6 +59,7 @@ public class AppController {
     public void onTick() {
         List<CreatureAction> creatureActionList = algorithmController.tick(appState);
         AppStatisticCalculator.updateStatistic(appState.getPopulation(), appState.getStatistic());
+        appState.incrementTickCount();
         viewController.draw(
                 appState);
     }

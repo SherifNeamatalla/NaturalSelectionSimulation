@@ -8,8 +8,6 @@ import app.natural.selection.common.model.food.FoodHolder;
 import app.natural.selection.common.model.population.Population;
 import app.natural.selection.common.model.position.Position;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +34,7 @@ public class Creature {
 
     private final AlgorithmParameters algorithmParameters;
 
-    private final LocalDateTime birthDate;
+    private final Long tickBirthDate;
 
     private final Integer generation;
 
@@ -48,10 +46,10 @@ public class Creature {
 
     private Integer foodCount;
 
-    private LocalDateTime lastReproductionActionDate;
+    private Long lastReproductionActionTick;
 
 
-    public Creature(Creature parent1, Creature parent2) {
+    public Creature(Creature parent1, Creature parent2, Long currentTick) {
         this.id = UUID.randomUUID();
         this.position = new Position(parent1.getPosition());
         this.creatureProperties = new CreatureProperties(parent1.getCreatureProperties(), parent2.getCreatureProperties());
@@ -66,8 +64,8 @@ public class Creature {
         this.parent1 = parent1;
         this.parent2 = parent2;
         this.foodCount = 0;
-        this.birthDate = LocalDateTime.now();
-        this.lastReproductionActionDate = null;
+        this.tickBirthDate = currentTick;
+        this.lastReproductionActionTick = null;
         this.generation = Math.max(parent1.getGeneration(), parent2.getGeneration()) + 1;
     }
 
@@ -86,8 +84,8 @@ public class Creature {
         this.parent1 = null;
         this.parent2 = null;
         this.foodCount = 0;
-        this.birthDate = LocalDateTime.now();
-        this.lastReproductionActionDate = null;
+        this.tickBirthDate = 0L;
+        this.lastReproductionActionTick = null;
         this.generation = 0;
     }
 
@@ -96,28 +94,29 @@ public class Creature {
     }
 
 
-    public CreatureAction tick(Population population, FoodHolder foodHolder) {
-        return creatureLogicHandler.creatureTick(this, population, foodHolder);
+    public CreatureAction tick(Population population, FoodHolder foodHolder, Long currentTick) {
+        return creatureLogicHandler.creatureTick(this, population, foodHolder, currentTick);
     }
 
-    public Boolean isReadyToMate() {
-        Boolean ageConstraintValid = Math.abs(Duration.between(birthDate, LocalDateTime.now()).getSeconds())
-                >= creatureProperties.getReproductionRequiredAge();
+    public Boolean isReadyToMate(Long currentTick) {
+        Boolean ageConstraintValid = currentTick - tickBirthDate
+                >= (long) creatureProperties.getReproductionRequiredAge() * algorithmParameters.getTickPerSecond();
 
         Boolean foodConstraintValid = foodCount >= creatureProperties.getReproductionRequiredFoodCount();
 
-        Boolean coolDownConstraintValid = lastReproductionActionDate == null || Math.abs(Duration.between(lastReproductionActionDate,
-                LocalDateTime.now()).getSeconds()) >= creatureProperties.getReproductionCoolDownSeconds();
+        Boolean coolDownConstraintValid = lastReproductionActionTick == null || currentTick - lastReproductionActionTick
+                >= (long) creatureProperties.getReproductionCoolDownSeconds() * algorithmParameters.getTickPerSecond();
 
         return ageConstraintValid && foodConstraintValid && coolDownConstraintValid;
     }
 
     public void move(
-            MovingDirection horizontalMovingDirection, MovingDirection verticalMovingDirection) {
+            MovingDirection horizontalMovingDirection, MovingDirection verticalMovingDirection,
+            Position wantedPosition) {
         this.horizontalMovingDirection = horizontalMovingDirection;
         this.verticalMovingDirection = verticalMovingDirection;
 
-        move();
+        move(wantedPosition);
     }
 
     public void eatFood(Food food) {
@@ -125,16 +124,30 @@ public class Creature {
         foodCount++;
     }
 
-    public void move() {
-        this.position.setX(
-                this.position.getX()
-                        + this.horizontalMovingDirection.intValue()
-                        * this.creatureProperties.getPixelsPerTick());
-        this.position.setY(
-                this.position.getY()
-                        + this.verticalMovingDirection.intValue()
-                        * this.creatureProperties.getPixelsPerTick());
+    public void move(Position wantedPosition) {
 
+        // Without this there is a bug where the creature will keep trying to get closer to the food without ever
+        // doing it
+        // an actual example got from debugging the bug: creature is at 73,305, food is at 57,294 and creature
+        // has speed of 25, if the creature tries to move with his speed towards the food he will end up at 48,277 as
+        // his speed is 25, then he repeats it again going back to the older position etc.. .
+        if (wantedPosition != null && wantedPosition.getX() - position.getX() <= creatureProperties.getPixelsPerTick() &&
+                wantedPosition.getY() - position.getY() <= creatureProperties.getPixelsPerTick()) {
+            this.position.setX(wantedPosition.getX());
+            this.position.setY(wantedPosition.getY());
+        } else {
+            this.position.setX(
+                    this.position.getX()
+                            + this.horizontalMovingDirection.intValue()
+                            * this.creatureProperties.getPixelsPerTick());
+            this.position.setY(
+                    this.position.getY()
+                            + this.verticalMovingDirection.intValue()
+                            * this.creatureProperties.getPixelsPerTick());
+
+        }
+
+        // To ensure the creature never gets out of the world, am your god now creature
         if (position.getX() >= this.maxX - 100 || position.getX() <= 0) {
             position.setX(Math.min(Math.max(0, position.getX()), this.maxX));
             horizontalMovingDirection = MovingDirection.fromIntValue(-1 * horizontalMovingDirection.intValue());
@@ -145,6 +158,7 @@ public class Creature {
 
             verticalMovingDirection = MovingDirection.fromIntValue(-1 * verticalMovingDirection.intValue());
         }
+
     }
 
 
@@ -152,8 +166,8 @@ public class Creature {
         creatureProperties.mutate(mutationRate, algorithmParameters);
     }
 
-    public void mated() {
-        lastReproductionActionDate = LocalDateTime.now();
+    public void mated(Long currentTick) {
+        lastReproductionActionTick = currentTick;
     }
 
     public void decayEnergy() {

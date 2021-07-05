@@ -10,5 +10,5 @@ import app.natural.selection.common.model.population.Population;
  * This is the creature's brain, in the future this interface could be implemented by a neural network to take action
  */
 public interface ICreatureLogicHandler {
-    CreatureAction creatureTick(Creature creature, Population population, FoodHolder foodHolder);
+    CreatureAction creatureTick(Creature creature, Population population, FoodHolder foodHolder, Long currentTick);
 }

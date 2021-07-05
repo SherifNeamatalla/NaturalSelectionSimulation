@@ -13,7 +13,7 @@ import app.natural.selection.common.util.DistanceCalculator;
 public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
 
     public CreatureAction creatureTick(
-            Creature creature, Population population, FoodHolder foodHolder) {
+            Creature creature, Population population, FoodHolder foodHolder, Long currentTick) {
 
         creature.decayEnergy();
 
@@ -21,8 +21,8 @@ public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
 
 
         // if energy > half, try to reproduce before finding food
-        if (creature.isReadyToMate()) {
-            CreatureAction matingTry = tryMating(creature, population);
+        if (creature.isReadyToMate(currentTick)) {
+            CreatureAction matingTry = tryMating(creature, population, currentTick);
 
 
             if (matingTry.getType() == CreatureActionType.REPRODUCTION) {
@@ -50,7 +50,7 @@ public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
         }
 
         if (nearestFood == null) {
-            creature.move();
+            creature.move(null);
             return CreatureAction.emptyAction(creature);
         }
 
@@ -62,12 +62,13 @@ public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
 
         creature.move(
                 MovingDirection.fromIntValue(horizontalDirection),
-                MovingDirection.fromIntValue(verticalDirection));
+                MovingDirection.fromIntValue(verticalDirection),
+                nearestFood.getPosition());
 
         return CreatureAction.emptyAction(creature);
     }
 
-    private CreatureAction tryMating(Creature creature, Population population) {
+    private CreatureAction tryMating(Creature creature, Population population, Long currentTick) {
         for (Creature possibleLoveInterest : population.getCreatures()) {
             // Don't "fuck" yourself, lol
             if (creature.getId().equals(possibleLoveInterest.getId())) continue;
@@ -78,7 +79,7 @@ public class DefaultCreatureLogicHandler implements ICreatureLogicHandler {
             if (distance > creature.getCreatureProperties().getVisionPixels()) continue;
 
             // Inside the creature, creature eats it
-            if (distance <= creature.getCreatureProperties().getSizePixels() && possibleLoveInterest.isReadyToMate() &&
+            if (distance <= creature.getCreatureProperties().getSizePixels() && possibleLoveInterest.isReadyToMate(currentTick) &&
                     distance <= creature.getCreatureProperties().getSizePixels()) {
                 return CreatureAction.reproduction(creature, possibleLoveInterest);
             }

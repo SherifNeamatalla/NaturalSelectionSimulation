@@ -5,14 +5,16 @@ import app.natural.selection.view.common.controller.ViewController;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.scene.control.Button;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToolBar;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+
+import static app.natural.selection.view.viewjavafx.components.ComponentsFactory.createSingleLabel;
+import static app.natural.selection.view.viewjavafx.components.ComponentsFactory.createSingleTextField;
 
 public class TopBarFx extends ToolBar {
 
@@ -30,11 +32,33 @@ public class TopBarFx extends ToolBar {
 
   private static final String INCREASE_SPEED_TEXT = "Faster";
 
+  private TextField ticksPerSecondTextField;
+
+  private TextField currentTickCountTextField;
+
   public TopBarFx(ViewController viewController) {
     setBackground(
-        new Background(new BackgroundFill(Color.rgb(11, 57, 84), CornerRadii.EMPTY, Insets.EMPTY)));
+            new Background(new BackgroundFill(Color.rgb(11, 57, 84), CornerRadii.EMPTY, Insets.EMPTY)));
     addButtons(viewController);
+    addLabeledTextFields();
     setVisible(true);
+  }
+
+  private void addLabeledTextFields() {
+    Label ticksPerSecondLabel = createSingleLabel("Current tick/second");
+    ticksPerSecondLabel.setPrefWidth(200);
+    getItems().add(ticksPerSecondLabel);
+
+    ticksPerSecondTextField = createSingleTextField();
+    getItems().add(ticksPerSecondTextField);
+
+
+    Label currentTickCountLabel = createSingleLabel("Current tick count");
+    currentTickCountLabel.setPrefWidth(200);
+    getItems().add(currentTickCountLabel);
+
+    currentTickCountTextField = createSingleTextField();
+    getItems().add(currentTickCountTextField);
   }
 
   private void addButtons(ViewController viewController) {
@@ -56,6 +80,7 @@ public class TopBarFx extends ToolBar {
     button.setPrefWidth(100);
     button.setMinWidth(100);
     button.setMaxWidth(100);
+    button.setAlignment(Pos.CENTER);
 
     button.setPrefHeight(50);
     button.setMaxHeight(50);
@@ -118,5 +143,7 @@ public class TopBarFx extends ToolBar {
   }
 
   public void draw(AppState appState) {
+    currentTickCountTextField.setText(appState.getCurrentTickCount().toString());
+    ticksPerSecondTextField.setText(appState.getAlgorithmParameters().getTickPerSecond().toString());
   }
 }

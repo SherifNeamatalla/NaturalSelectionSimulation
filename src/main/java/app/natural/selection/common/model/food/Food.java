@@ -1,8 +1,8 @@
 package app.natural.selection.common.model.food;
 
-import app.natural.selection.common.model.Position;
+import app.natural.selection.common.model.position.Position;
 import app.natural.selection.common.util.RandomNumberGenerator;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 import java.util.UUID;
 
@@ -14,13 +14,13 @@ public class Food {
 
   private final Double nutritionValue;
 
-  public Food(SimulationConfiguration simulationConfiguration) {
+  public Food(AlgorithmParameters algorithmParameters) {
     this.id = UUID.randomUUID();
-    this.position = new Position(simulationConfiguration);
+    this.position = new Position(algorithmParameters);
     this.nutritionValue =
         RandomNumberGenerator.generateRandomDouble(
-            simulationConfiguration.getMinFoodNutritionValue(),
-            simulationConfiguration.getMaxFoodNutritionValue());
+            algorithmParameters.getMinFoodNutritionValue(),
+            algorithmParameters.getMaxFoodNutritionValue());
   }
 
   public UUID getId() {

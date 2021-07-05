@@ -25,7 +25,6 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
     List<Food> foodList = appState.getFoodHolder().getFoodList();
 
     drawCreatures(creatureList);
-    System.out.println(foodList.size());
     drawFoods(foodList);
   }
 
@@ -53,7 +52,6 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
   private void drawCreatures(List<Creature> creatureList) {
     GraphicsContext gc = getGraphicsContext2D();
     creatureList.forEach(creature -> drawCreature(creature, gc));
-    //    System.out.println(creatureList.size());
   }
 
   private void drawCreature(Creature creature, GraphicsContext gc) {

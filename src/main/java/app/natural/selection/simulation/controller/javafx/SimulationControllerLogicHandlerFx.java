@@ -1,7 +1,7 @@
 package app.natural.selection.simulation.controller.javafx;
 
 import app.natural.selection.appcontroller.AppController;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 import app.natural.selection.simulation.controller.interfaces.ISimulationControllerLogicHandler;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -12,22 +12,19 @@ public class SimulationControllerLogicHandlerFx implements ISimulationController
   private Timeline timeline;
 
   private final AppController appController;
-  private final SimulationConfiguration simulationConfiguration;
+  private final AlgorithmParameters algorithmParameters;
+  private Integer currentSpeed = 1;
 
   public SimulationControllerLogicHandlerFx(
-      AppController appController, SimulationConfiguration simulationConfiguration) {
+      AppController appController, AlgorithmParameters algorithmParameters) {
     this.appController = appController;
-    this.simulationConfiguration = simulationConfiguration;
+    this.algorithmParameters = algorithmParameters;
     initKeyframes();
   }
 
   private void initKeyframes() {
     KeyFrame keyFrame =
-        new KeyFrame(
-            Duration.millis(simulationConfiguration.getTickPerSecond()),
-            actionEvent -> {
-              this.appController.onTick();
-            });
+            createKeyFrame();
 
     this.timeline = new Timeline(keyFrame);
     this.timeline.setCycleCount(Animation.INDEFINITE);
@@ -50,11 +47,33 @@ public class SimulationControllerLogicHandlerFx implements ISimulationController
 
   @Override
   public void increaseSimulationSpeed() {
-    // TODO
+    this.timeline.stop();
+    currentSpeed *= 2;
+    initKeyframes();
+    startSimulation();
   }
 
   @Override
   public void decreaseSimulationSpeed() {
-    // TODO
+    if (currentSpeed != 1) {
+      this.timeline.stop();
+      currentSpeed /= 2;
+      initKeyframes();
+      startSimulation();
+    }
+  }
+
+  @Override
+  public int getCurrentSimulationSpeed() {
+    return currentSpeed;
+  }
+
+  private KeyFrame createKeyFrame() {
+    return
+            new KeyFrame(
+                    Duration.millis(algorithmParameters.getTickPerSecond() / currentSpeed),
+                    actionEvent -> {
+                      this.appController.onTick();
+                    });
   }
 }

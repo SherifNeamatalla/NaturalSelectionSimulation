@@ -41,6 +41,11 @@ public class GeneralSimulationControllerLogicHandler implements ISimulationContr
 
   public void decreaseSimulationSpeed() {}
 
+  @Override
+  public int getCurrentSimulationSpeed() {
+    return 0;
+  }
+
   /** Event emitters */
   private void tick() {
     appController.onTick();

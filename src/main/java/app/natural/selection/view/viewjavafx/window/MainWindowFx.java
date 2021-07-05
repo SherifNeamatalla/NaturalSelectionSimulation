@@ -1,11 +1,6 @@
 package app.natural.selection.view.viewjavafx.window;
 
 import app.natural.selection.appcontroller.model.AppState;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 import app.natural.selection.view.common.configuration.ViewConfiguration;
 import app.natural.selection.view.common.controller.ViewController;
 import app.natural.selection.view.common.interfaces.IMainWindow;
@@ -14,14 +9,17 @@ import app.natural.selection.view.viewjavafx.sidebars.BottomBarFx;
 import app.natural.selection.view.viewjavafx.sidebars.LSideBarFx;
 import app.natural.selection.view.viewjavafx.sidebars.RSideBarFx;
 import app.natural.selection.view.viewjavafx.sidebars.TopBarFx;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class MainWindowFx extends BorderPane implements IMainWindow {
 
-  private ViewConfiguration viewConfiguration;
+  private final ViewConfiguration viewConfiguration;
 
-  private ViewController viewController;
+  private final ViewController viewController;
 
-  private Stage primaryStage;
+  private final Stage primaryStage;
 
   private TopBarFx topBar;
 
@@ -38,16 +36,12 @@ public class MainWindowFx extends BorderPane implements IMainWindow {
     this.viewConfiguration = viewConfiguration;
     this.viewController = viewController;
     this.primaryStage = primaryStage;
-    Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 
-    //    primaryStage.setX(viewConfiguration.getScreenHeight());
-    //    primaryStage.setY(viewConfiguration.getScreenWidth());
     primaryStage.setWidth(viewConfiguration.getScreenWidth());
     primaryStage.setHeight(viewConfiguration.getScreenHeight());
 
     primaryStage.setTitle("Genetic Evolution");
     primaryStage.setScene(new Scene(this, 300, 275));
-    primaryStage.show();
     init();
   }
 
@@ -77,9 +71,14 @@ public class MainWindowFx extends BorderPane implements IMainWindow {
   public void draw(AppState appState) {
     canvas.draw(appState);
     lSideBar.draw(appState);
+    bottomBar.draw(appState);
+    topBar.draw(appState);
+    rSideBar.draw(appState);
 
   }
 
   @Override
-  public void display() {}
+  public void display() {
+    primaryStage.show();
+  }
 }

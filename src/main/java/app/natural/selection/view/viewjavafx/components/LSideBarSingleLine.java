@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
+import static app.natural.selection.view.viewjavafx.components.ComponentsFactory.createSingleLabel;
+
 public class LSideBarSingleLine extends HBox {
 
   private Label label;
@@ -24,9 +26,7 @@ public class LSideBarSingleLine extends HBox {
   }
 
   private void createLabel(String labelText) {
-    this.label = new Label(labelText);
-    this.label.setStyle("-fx-text-fill: white");
-    this.label.setPrefSize(100, 10);
+    label = createSingleLabel(labelText);
     getChildren().add(label);
   }
 

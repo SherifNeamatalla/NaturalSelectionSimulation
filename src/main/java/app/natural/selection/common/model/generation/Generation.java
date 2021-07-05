@@ -1,7 +1,7 @@
 package app.natural.selection.common.model.generation;
 
 import app.natural.selection.common.model.creature.Creature;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 public class Generation {
   private List<Creature> creatures;
 
-  public Generation(SimulationConfiguration simulationConfiguration) {
+  public Generation(AlgorithmParameters algorithmParameters) {
     this.creatures = new ArrayList<>();
 
-    for (int i = 0; i < simulationConfiguration.getStartingGenerationCount(); i++) {
-      this.creatures.add(new Creature(simulationConfiguration));
+    for (int i = 0; i < algorithmParameters.getStartingGenerationCount(); i++) {
+      this.creatures.add(new Creature(algorithmParameters));
     }
   }
 

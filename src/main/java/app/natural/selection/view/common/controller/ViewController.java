@@ -9,24 +9,13 @@ import app.natural.selection.view.common.interfaces.IMainWindow;
 
 public class ViewController {
 
-  private AppController appController;
-  private ViewConfiguration viewConfiguration;
-  private IMainWindow mainWindow;
+  private final AppController appController;
+  private final ViewConfiguration viewConfiguration;
+  private final IMainWindow mainWindow;
 
   public ViewController(AppController appController, ViewConfiguration viewConfiguration, AppInitConfig appInitConfig) {
     this.appController = appController;
     this.viewConfiguration = viewConfiguration;
-    initMainWindow(appInitConfig);
-  }
-
-  /**
-   * Init methods
-   *
-   * @param appInitConfig
-   */
-  private void initMainWindow(AppInitConfig appInitConfig) {
-    // For now we have just one main window class, in the future using viewConfig we can have
-    // multiple types and a factory
     this.mainWindow = MainWindowFactory.createMainWindow(appInitConfig, this, viewConfiguration);
   }
 

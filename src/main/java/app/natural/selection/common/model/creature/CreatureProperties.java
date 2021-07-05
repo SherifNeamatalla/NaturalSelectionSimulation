@@ -1,7 +1,7 @@
 package app.natural.selection.common.model.creature;
 
 import app.natural.selection.common.util.RandomNumberGenerator;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 public class CreatureProperties {
 
@@ -19,41 +19,41 @@ public class CreatureProperties {
 
   private Integer reproductionRequiredAge;
 
-  public CreatureProperties(SimulationConfiguration simulationConfiguration) {
+  public CreatureProperties(AlgorithmParameters algorithmParameters) {
     this.pixelsPerTick =
             RandomNumberGenerator.generateRandomDouble(
-                    simulationConfiguration.getMinSpeedPixels(),
-                    simulationConfiguration.getMaxSpeedPixels());
+                    algorithmParameters.getMinSpeedPixels(),
+                    algorithmParameters.getMaxSpeedPixels());
 
     this.sizePixels =
             RandomNumberGenerator.generateRandomInteger(
-                    simulationConfiguration.getMinInitialCreatureSize(),
-                    simulationConfiguration.getMaxInitialCreatureSize());
+                    algorithmParameters.getMinInitialCreatureSize(),
+                    algorithmParameters.getMaxInitialCreatureSize());
 
     this.energyDecayPerTick =
             RandomNumberGenerator.generateRandomDouble(
-                    simulationConfiguration.getMinEnergyDecayPerTick(),
-                    simulationConfiguration.getMaxEnergyDecayPerTick());
+                    algorithmParameters.getMinEnergyDecayPerTick(),
+                    algorithmParameters.getMaxEnergyDecayPerTick());
 
     this.visionPixels =
             RandomNumberGenerator.generateRandomInteger(
-                    simulationConfiguration.getMinVisionPixels(),
-                    simulationConfiguration.getMaxVisionPixels());
+                    algorithmParameters.getMinVisionPixels(),
+                    algorithmParameters.getMaxVisionPixels());
 
     this.reproductionCoolDownSeconds =
             RandomNumberGenerator.generateRandomInteger(
-                    simulationConfiguration.getMinReproductionCoolDown(),
-                    simulationConfiguration.getMaxReproductionCoolDown());
+                    algorithmParameters.getMinReproductionCoolDown(),
+                    algorithmParameters.getMaxReproductionCoolDown());
 
     this.reproductionRequiredFoodCount =
             RandomNumberGenerator.generateRandomInteger(
-                    simulationConfiguration.getMinRequiredMatingFoodCount(),
-                    simulationConfiguration.getMaxRequiredMatingFoodCount());
+                    algorithmParameters.getMinRequiredMatingFoodCount(),
+                    algorithmParameters.getMaxRequiredMatingFoodCount());
 
     this.reproductionRequiredAge =
             RandomNumberGenerator.generateRandomInteger(
-                    simulationConfiguration.getMinRequiredMatingAgeSeconds(),
-                    simulationConfiguration.getMaxRequiredMatingAgeSeconds());
+                    algorithmParameters.getMinRequiredMatingAgeSeconds(),
+                    algorithmParameters.getMaxRequiredMatingAgeSeconds());
   }
 
   public CreatureProperties(CreatureProperties creatureProperties1, CreatureProperties creatureProperties2) {
@@ -125,55 +125,59 @@ public class CreatureProperties {
     return reproductionCoolDownSeconds;
   }
 
-  public void mutate(Double mutationRate, SimulationConfiguration simulationConfiguration) {
+  public void mutate(Double mutationRate, AlgorithmParameters algorithmParameters) {
     Double probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.pixelsPerTick = RandomNumberGenerator.generateRandomDouble(simulationConfiguration.getMinSpeedPixels(),
-              simulationConfiguration.getMaxSpeedPixels());
+      this.pixelsPerTick = RandomNumberGenerator.generateRandomDouble(algorithmParameters.getMinSpeedPixels(),
+              algorithmParameters.getMaxSpeedPixels()) + RandomNumberGenerator.generateRandomDouble(-5.0, 5.0);
 
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.energyDecayPerTick = RandomNumberGenerator.generateRandomDouble(simulationConfiguration.getMinEnergyDecayPerTick(),
-              simulationConfiguration.getMaxEnergyDecayPerTick());
+      this.energyDecayPerTick = RandomNumberGenerator.generateRandomDouble(algorithmParameters.getMinEnergyDecayPerTick(),
+              algorithmParameters.getMaxEnergyDecayPerTick()) + RandomNumberGenerator.generateRandomDouble(-5.0, 5.0);
+
+      if (energyDecayPerTick <= 0) {
+        energyDecayPerTick = algorithmParameters.getMinEnergyDecayPerTick();
+      }
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.sizePixels = RandomNumberGenerator.generateRandomInteger(simulationConfiguration.getMinInitialCreatureSize(),
-              simulationConfiguration.getMaxInitialCreatureSize());
+      this.sizePixels = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinInitialCreatureSize(),
+              algorithmParameters.getMaxInitialCreatureSize()) + RandomNumberGenerator.generateRandomInteger(-3, 3);
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.visionPixels = RandomNumberGenerator.generateRandomInteger(simulationConfiguration.getMinVisionPixels(),
-              simulationConfiguration.getMaxVisionPixels());
+      this.visionPixels = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinVisionPixels(),
+              algorithmParameters.getMaxVisionPixels()) + RandomNumberGenerator.generateRandomInteger(-15, 15);
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.reproductionCoolDownSeconds = RandomNumberGenerator.generateRandomInteger(simulationConfiguration.getMinReproductionCoolDown(),
-              simulationConfiguration.getMaxReproductionCoolDown());
+      this.reproductionCoolDownSeconds = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinReproductionCoolDown(),
+              algorithmParameters.getMaxReproductionCoolDown()) + RandomNumberGenerator.generateRandomInteger(-5, 5);
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.reproductionRequiredFoodCount = RandomNumberGenerator.generateRandomInteger(simulationConfiguration.getMinRequiredMatingFoodCount(),
-              simulationConfiguration.getMaxRequiredMatingFoodCount());
+      this.reproductionRequiredFoodCount = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinRequiredMatingFoodCount(),
+              algorithmParameters.getMaxRequiredMatingFoodCount()) + RandomNumberGenerator.generateRandomInteger(-3, 3);
     }
 
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.reproductionRequiredAge = RandomNumberGenerator.generateRandomInteger(simulationConfiguration.getMinRequiredMatingAgeSeconds(),
-              simulationConfiguration.getMaxRequiredMatingAgeSeconds());
+      this.reproductionRequiredAge = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinRequiredMatingAgeSeconds(),
+              algorithmParameters.getMaxRequiredMatingAgeSeconds()) + RandomNumberGenerator.generateRandomInteger(-5, 5);
     }
   }
 }

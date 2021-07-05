@@ -1,5 +1,7 @@
 package app.natural.selection.view.viewjavafx.sidebars;
 
+import app.natural.selection.appcontroller.model.AppState;
+import app.natural.selection.view.common.controller.ViewController;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -11,7 +13,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import app.natural.selection.view.common.controller.ViewController;
 
 public class TopBarFx extends ToolBar {
 
@@ -110,9 +111,12 @@ public class TopBarFx extends ToolBar {
 
   private Button decreaseSpeedButton(ViewController viewController) {
     return initButton(
-        DECREASE_SPEED_TEXT,
-        (actionEvent) -> {
-          viewController.handleDecreaseSpeedEvent();
-        });
+            DECREASE_SPEED_TEXT,
+            (actionEvent) -> {
+              viewController.handleDecreaseSpeedEvent();
+            });
+  }
+
+  public void draw(AppState appState) {
   }
 }

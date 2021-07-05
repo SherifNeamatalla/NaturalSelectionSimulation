@@ -2,11 +2,11 @@ package app.natural.selection.common.model.creature;
 
 import app.natural.selection.algorithm.controllers.implementations.defaultImpl.DefaultCreatureLogicHandler;
 import app.natural.selection.algorithm.controllers.interfaces.ICreatureLogicHandler;
-import app.natural.selection.common.model.Position;
+import app.natural.selection.common.model.position.Position;
 import app.natural.selection.common.model.food.Food;
 import app.natural.selection.common.model.food.FoodHolder;
 import app.natural.selection.common.model.generation.Generation;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ public class Creature {
 
   private final Creature parent2;
 
-  private final SimulationConfiguration simulationConfiguration;
+  private final AlgorithmParameters algorithmParameters;
 
   private Integer foodCount;
 
@@ -61,7 +61,7 @@ public class Creature {
     this.verticalMovingDirection = MovingDirection.STAY;
     this.maxX = parent1.getMaxX();
     this.maxY = parent1.getMaxY();
-    this.simulationConfiguration = parent1.getSimulationConfiguration();
+    this.algorithmParameters = parent1.getSimulationConfiguration();
     this.parent1 = parent1;
     this.parent2 = parent2;
     this.foodCount = 0;
@@ -70,18 +70,18 @@ public class Creature {
     this.generation = Math.max(parent1.getGeneration(), parent2.getGeneration()) + 1;
   }
 
-  public Creature(SimulationConfiguration simulationConfiguration) {
+  public Creature(AlgorithmParameters algorithmParameters) {
     this.id = UUID.randomUUID();
-    this.position = new Position(simulationConfiguration);
-    this.creatureProperties = new CreatureProperties(simulationConfiguration);
+    this.position = new Position(algorithmParameters);
+    this.creatureProperties = new CreatureProperties(algorithmParameters);
     this.takenActions = new ArrayList<>();
     this.creatureLogicHandler = new DefaultCreatureLogicHandler();
-    this.energy = simulationConfiguration.getCreatureStaringEnergy().doubleValue();
+    this.energy = algorithmParameters.getCreatureStaringEnergy().doubleValue();
     this.horizontalMovingDirection = MovingDirection.STAY;
     this.verticalMovingDirection = MovingDirection.STAY;
-    this.maxX = simulationConfiguration.getCanvasWidth();
-    this.maxY = simulationConfiguration.getCanvasHeight();
-    this.simulationConfiguration = simulationConfiguration;
+    this.maxX = algorithmParameters.getCanvasWidth();
+    this.maxY = algorithmParameters.getCanvasHeight();
+    this.algorithmParameters = algorithmParameters;
     this.parent1 = null;
     this.parent2 = null;
     this.foodCount = 0;
@@ -90,8 +90,8 @@ public class Creature {
     this.generation = 0;
   }
 
-  public SimulationConfiguration getSimulationConfiguration() {
-    return simulationConfiguration;
+  public AlgorithmParameters getSimulationConfiguration() {
+    return algorithmParameters;
   }
 
 
@@ -148,7 +148,7 @@ public class Creature {
 
 
   public void mutate(Double mutationRate) {
-    creatureProperties.mutate(mutationRate, simulationConfiguration);
+    creatureProperties.mutate(mutationRate, algorithmParameters);
   }
 
   public void mated() {

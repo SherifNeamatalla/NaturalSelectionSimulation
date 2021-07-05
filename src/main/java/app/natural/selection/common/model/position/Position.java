@@ -1,7 +1,7 @@
-package app.natural.selection.common.model;
+package app.natural.selection.common.model.position;
 
 import app.natural.selection.common.util.RandomNumberGenerator;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 public class Position {
 
@@ -14,11 +14,11 @@ public class Position {
     this.y = position.getY();
   }
 
-  public Position(SimulationConfiguration simulationConfiguration) {
+  public Position(AlgorithmParameters algorithmParameters) {
     this.x =
-            RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getCanvasWidth().doubleValue());
+            RandomNumberGenerator.generateRandomDouble(0.0, algorithmParameters.getCanvasWidth().doubleValue());
     this.y =
-            RandomNumberGenerator.generateRandomDouble(0.0, simulationConfiguration.getCanvasHeight().doubleValue());
+            RandomNumberGenerator.generateRandomDouble(0.0, algorithmParameters.getCanvasHeight().doubleValue());
   }
 
   public Double getX() {

@@ -1,6 +1,6 @@
 package app.natural.selection.common.model.food;
 
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,14 @@ public class FoodHolder {
 
   private List<Food> foodList;
 
-  public FoodHolder(SimulationConfiguration simulationConfiguration) {
+  public FoodHolder(AlgorithmParameters algorithmParameters) {
     this.foodList = new ArrayList<>();
-    generateFood(simulationConfiguration);
+    generateFood(algorithmParameters);
   }
 
-  public void generateFood(SimulationConfiguration simulationConfiguration) {
-    for (int i = 0; i < simulationConfiguration.getFoodCount(); i++) {
-      this.foodList.add(new Food(simulationConfiguration));
+  public void generateFood(AlgorithmParameters algorithmParameters) {
+    for (int i = 0; i < algorithmParameters.getFoodCount(); i++) {
+      this.foodList.add(new Food(algorithmParameters));
     }
   }
 

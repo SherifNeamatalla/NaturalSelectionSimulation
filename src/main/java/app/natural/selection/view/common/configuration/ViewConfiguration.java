@@ -2,20 +2,13 @@ package app.natural.selection.view.common.configuration;
 
 public class ViewConfiguration {
 
-  private Integer screenWidth;
+  private final Integer screenWidth;
 
-  private Integer screenHeight;
+  private final Integer screenHeight;
 
-  private Integer canvasHeight;
+  private final Integer canvasHeight;
 
-  private Integer canvasWidth;
-
-  public ViewConfiguration(Integer screenWidth, Integer screenHeight, Integer canvasHeight, Integer canvasWidth) {
-    this.screenWidth = screenWidth;
-    this.screenHeight = screenHeight;
-    this.canvasHeight = canvasHeight;
-    this.canvasWidth = canvasWidth;
-  }
+  private final Integer canvasWidth;
 
   public ViewConfiguration() {
     screenWidth = ViewConstants.DEFAULT_SCREEN_WIDTH;
@@ -28,31 +21,19 @@ public class ViewConfiguration {
     return screenWidth;
   }
 
-  public void setScreenWidth(Integer screenWidth) {
-    this.screenWidth = screenWidth;
-  }
 
   public Integer getScreenHeight() {
     return screenHeight;
   }
 
-  public void setScreenHeight(Integer screenHeight) {
-    this.screenHeight = screenHeight;
-  }
 
   public Integer getCanvasHeight() {
     return canvasHeight;
   }
 
-  public void setCanvasHeight(Integer canvasHeight) {
-    this.canvasHeight = canvasHeight;
-  }
 
   public Integer getCanvasWidth() {
     return canvasWidth;
   }
 
-  public void setCanvasWidth(Integer canvasWidth) {
-    this.canvasWidth = canvasWidth;
-  }
 }

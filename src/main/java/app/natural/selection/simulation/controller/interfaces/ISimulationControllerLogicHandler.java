@@ -11,4 +11,6 @@ public interface ISimulationControllerLogicHandler {
   void increaseSimulationSpeed();
 
   void decreaseSimulationSpeed();
+
+  int getCurrentSimulationSpeed();
 }

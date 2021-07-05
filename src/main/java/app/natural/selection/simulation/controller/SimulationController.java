@@ -2,21 +2,21 @@ package app.natural.selection.simulation.controller;
 
 import app.natural.selection.appcontroller.AppController;
 import app.natural.selection.appcontroller.config.AppInitConfig;
-import app.natural.selection.simulation.config.SimulationConfiguration;
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 import app.natural.selection.simulation.controller.factories.SimulationControllerLogicHandlerFactory;
 import app.natural.selection.simulation.controller.interfaces.ISimulationControllerLogicHandler;
 
 public class SimulationController {
 
-  private ISimulationControllerLogicHandler logicHandler;
+  private final ISimulationControllerLogicHandler logicHandler;
 
   public SimulationController(
       AppInitConfig appInitConfig,
       AppController appController,
-      SimulationConfiguration simulationConfiguration) {
+      AlgorithmParameters algorithmParameters) {
     this.logicHandler =
         SimulationControllerLogicHandlerFactory.createSimulationController(
-            appInitConfig, appController, simulationConfiguration);
+            appInitConfig, appController, algorithmParameters);
   }
 
   public void startSimulation() {
@@ -37,5 +37,9 @@ public class SimulationController {
 
   public void decreaseSimulationSpeed() {
     logicHandler.decreaseSimulationSpeed();
+  }
+
+  public int getCurrentSimulationSpeed() {
+    return logicHandler.getCurrentSimulationSpeed();
   }
 }

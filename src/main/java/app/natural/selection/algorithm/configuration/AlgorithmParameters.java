@@ -1,60 +1,60 @@
-package app.natural.selection.simulation.config;
+package app.natural.selection.algorithm.configuration;
 
-import static app.natural.selection.simulation.config.SimulationConstants.*;
+import static app.natural.selection.algorithm.configuration.AlgorithmConstants.*;
 
-public class SimulationConfiguration {
+public class AlgorithmParameters {
 
-  private Integer tickPerSecond;
+  private final Integer tickPerSecond;
 
-  private Integer startingGenerationCount;
+  private final Integer startingGenerationCount;
 
-  private Integer foodFrequencySeconds;
+  private final Integer foodFrequencySeconds;
 
-  private Integer foodCount;
+  private final Integer foodCount;
 
-  private Integer creatureStaringEnergy;
+  private final Integer creatureStaringEnergy;
 
-  private Double maxXPosition;
+  private final Double maxXPosition;
 
-  private Double maxYPosition;
+  private final Double maxYPosition;
 
-  private Double maxFoodNutritionValue;
+  private final Double maxFoodNutritionValue;
 
-  private Double minFoodNutritionValue;
+  private final Double minFoodNutritionValue;
 
-  private Integer minVisionPixels;
+  private final Integer minVisionPixels;
 
-  private Integer maxVisionPixels;
+  private final Integer maxVisionPixels;
 
-  private Double minEnergyDecayPerTick;
+  private final Double minEnergyDecayPerTick;
 
-  private Double maxEnergyDecayPerTick;
+  private final Double maxEnergyDecayPerTick;
 
-  private Integer minInitialCreatureSize;
+  private final Integer minInitialCreatureSize;
 
-  private Integer maxInitialCreatureSize;
+  private final Integer maxInitialCreatureSize;
 
-  private Double minSpeedPixels;
+  private final Double minSpeedPixels;
 
-  private Double maxSpeedPixels;
+  private final Double maxSpeedPixels;
 
-  private Integer canvasWidth;
+  private final Integer canvasWidth;
 
-  private Integer canvasHeight;
+  private final Integer canvasHeight;
 
-  private Integer minRequiredMatingFoodCount;
+  private final Integer minRequiredMatingFoodCount;
 
-  private Integer maxRequiredMatingFoodCount;
+  private final Integer maxRequiredMatingFoodCount;
 
-  private Integer minRequiredMatingAgeSeconds;
+  private final Integer minRequiredMatingAgeSeconds;
 
-  private Integer maxRequiredMatingAgeSeconds;
+  private final Integer maxRequiredMatingAgeSeconds;
 
-  private Integer minReproductionCoolDown;
+  private final Integer minReproductionCoolDown;
 
-  private Integer maxReproductionCoolDown;
+  private final Integer maxReproductionCoolDown;
 
-  public SimulationConfiguration(Integer canvasHeight, Integer canvasWidth) {
+  public AlgorithmParameters(Integer canvasHeight, Integer canvasWidth) {
     this.tickPerSecond = DEFAULT_TICKS_PER_SECOND;
     this.startingGenerationCount = DEFAULT_STARTING_GENERATION_COUNT;
     this.creatureStaringEnergy = DEFAULT_CREATURE_STARTING_ENERGY;

@@ -1,6 +1,6 @@
 package app.natural.selection.algorithm.util;
 
-import app.natural.selection.common.model.Position;
+import app.natural.selection.common.model.position.Position;
 
 public class DistanceCalculator {
 

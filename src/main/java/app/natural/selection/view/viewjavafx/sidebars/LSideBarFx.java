@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import static app.natural.selection.view.viewjavafx.components.ComponentsFactory.createSingleLabel;
+
 public class LSideBarFx extends VBox {
 
     private LSideBarSingleLine pixelsPerTickStatisticEntry;
@@ -42,12 +44,6 @@ public class LSideBarFx extends VBox {
 
     }
 
-    private Label createSingleLabel(String text) {
-        Label label = new Label(text);
-        label.setStyle("-fx-text-fill:white");
-        label.setPrefSize(100, 10);
-        return label;
-    }
 
     private void addTitleLabels() {
         HBox horizontalTitleBox = new HBox();

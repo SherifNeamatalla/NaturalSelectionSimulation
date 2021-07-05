@@ -21,7 +21,7 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
   public void draw(AppState appState) {
     clearOldState();
 
-    List<Creature> creatureList = appState.getGeneration().getCreatures();
+    List<Creature> creatureList = appState.getPopulation().getCreatures();
     List<Food> foodList = appState.getFoodHolder().getFoodList();
 
     drawCreatures(creatureList);

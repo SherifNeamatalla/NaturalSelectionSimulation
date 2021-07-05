@@ -6,7 +6,7 @@ public class AlgorithmParameters {
 
   private final Integer tickPerSecond;
 
-  private final Integer startingGenerationCount;
+  private final Integer startingPopulationCount;
 
   private final Integer foodFrequencySeconds;
 
@@ -56,7 +56,7 @@ public class AlgorithmParameters {
 
   public AlgorithmParameters(Integer canvasHeight, Integer canvasWidth) {
     this.tickPerSecond = DEFAULT_TICKS_PER_SECOND;
-    this.startingGenerationCount = DEFAULT_STARTING_GENERATION_COUNT;
+    this.startingPopulationCount = DEFAULT_STARTING_POPULATION_COUNT;
     this.creatureStaringEnergy = DEFAULT_CREATURE_STARTING_ENERGY;
     this.foodFrequencySeconds = DEFAULT_FOOD_FREQUENCY_SECONDS;
     this.foodCount = DEFAULT_FOOD_COUNT;
@@ -114,8 +114,8 @@ public class AlgorithmParameters {
   }
 
 
-  public Integer getStartingGenerationCount() {
-    return startingGenerationCount;
+  public Integer getStartingPopulationCount() {
+    return startingPopulationCount;
   }
 
   public Integer getFoodFrequencySeconds() {

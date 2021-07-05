@@ -1,10 +1,7 @@
 import app.natural.selection.appcontroller.AppController;
-import app.natural.selection.appcontroller.config.AppInitConfig;
-import app.natural.selection.appcontroller.config.FrontendFramework;
+import app.natural.selection.appcontroller.configuration.AppInitialConfiguration;
+import app.natural.selection.appcontroller.configuration.FrontendFramework;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainJavaFxApplication extends Application {
@@ -15,7 +12,7 @@ public class MainJavaFxApplication extends Application {
   @Override
   public void start(Stage primaryStage) {
     AppController appController =
-        new AppController(new AppInitConfig(FrontendFramework.JAVAFX, primaryStage));
+        new AppController(new AppInitialConfiguration(FrontendFramework.JAVAFX, primaryStage));
 
 
   }

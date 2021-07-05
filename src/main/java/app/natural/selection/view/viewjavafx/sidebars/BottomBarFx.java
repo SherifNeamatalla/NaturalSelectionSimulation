@@ -35,6 +35,6 @@ public class BottomBarFx extends HBox {
   }
 
   public void draw(AppState appState) {
-    currentCreaturesCountTextField.setText(Integer.toString(appState.getGeneration().getCreatures().size()));
+    currentCreaturesCountTextField.setText(Integer.toString(appState.getPopulation().getCreatures().size()));
   }
 }

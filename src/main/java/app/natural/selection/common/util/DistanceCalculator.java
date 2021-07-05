@@ -1,4 +1,4 @@
-package app.natural.selection.algorithm.util;
+package app.natural.selection.common.util;
 
 import app.natural.selection.common.model.position.Position;
 

@@ -4,86 +4,43 @@ import app.natural.selection.algorithm.configuration.AlgorithmConfiguration;
 import app.natural.selection.algorithm.controllers.interfaces.IReproductionController;
 import app.natural.selection.algorithm.factories.AlgorithmControllersFactory;
 import app.natural.selection.appcontroller.model.AppState;
-import app.natural.selection.common.model.creature.Creature;
 import app.natural.selection.common.model.creature.CreatureAction;
-import app.natural.selection.common.model.food.Food;
 import app.natural.selection.common.model.food.FoodHolder;
-import app.natural.selection.common.model.generation.Generation;
+import app.natural.selection.common.model.population.Population;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static app.natural.selection.algorithm.actionhandler.CreatureActionHandler.handleCreatureActions;
 
 public class AlgorithmController {
 
-  private IReproductionController reproductionController;
+    private IReproductionController reproductionController;
 
-  private final AlgorithmConfiguration configuration;
-
-
-  public AlgorithmController(AlgorithmConfiguration configuration) {
-    this.configuration = configuration;
-    this.initControllers();
-  }
-
-  private void initControllers() {
-    reproductionController = AlgorithmControllersFactory.createReproductionController(configuration.getReproductionControllerType());
-  }
+    private final AlgorithmConfiguration configuration;
 
 
-  private void handleCreatureActions(
-          Generation generation, FoodHolder foodHolder,List<CreatureAction> creatureActions) {
-    for (CreatureAction creatureAction : creatureActions) {
-      switch (creatureAction.getType()){
-        case REPRODUCTION->
-                onReproduction(generation, creatureAction.getActionTakingCreature(), creatureAction.getLoveInterest());
-
-        case DEAD -> onCreatureDead(generation,creatureAction.getActionTakingCreature());
-
-        case ATE_FOOD -> onCreatureAteFood(creatureAction.getActionTakingCreature(),foodHolder,creatureAction.getAteFood());
-
-      }
+    public AlgorithmController(AlgorithmConfiguration configuration) {
+        this.configuration = configuration;
+        this.reproductionController =
+                AlgorithmControllersFactory.createReproductionController(configuration.getReproductionControllerType());
     }
-  }
 
-  private void onCreatureAteFood(Creature actionTakingCreature, FoodHolder foodHolder, Food ateFood) {
-    Optional<Food> ateFoodOptional = foodHolder.getFoodList().stream().filter(food -> food.getId().equals(ateFood.getId())).findFirst();
+    public List<CreatureAction> tick(AppState appState) {
+        Population population = appState.getPopulation();
+        FoodHolder foodHolder = appState.getFoodHolder();
+        List<CreatureAction> creatureActions = Collections.synchronizedList(new
+                ArrayList<>());
+        population.getCreatures()
+                .forEach(
+                        creature -> {
+                            creatureActions.add(creature.tick(population, foodHolder));
+                        });
 
-    ateFoodOptional.ifPresent((foundFood) -> {
-      foodHolder.getFoodList().remove(foundFood);
-      actionTakingCreature.eatFood(foundFood);
-    });
-  }
+        handleCreatureActions(population, foodHolder, creatureActions, reproductionController, configuration);
+        appState.generateFood();
 
-  private void onCreatureDead(Generation generation, Creature actionTakingCreature) {
-    generation.setCreatures(generation.getCreatures().stream().filter(creature ->
-            !creature.getId().equals(actionTakingCreature.getId())).collect(Collectors.toList()));
-  }
-
-  private void onReproduction(Generation generation, Creature actionTakingCreature, Creature loveInterest) {
-    List<Creature> offSpring = reproductionController.reproduceNewCreatures(actionTakingCreature, loveInterest);
-    offSpring.forEach(creature -> creature.mutate(configuration.getMutationRate()));
-    generation.getCreatures().addAll(offSpring);
-    actionTakingCreature.mated();
-    loveInterest.mated();
-    System.out.println("Mated!!");
-
-  }
-
-  public void tick(AppState appState) {
-    Generation generation = appState.getGeneration();
-    FoodHolder foodHolder = appState.getFoodHolder();
-    List<CreatureAction> creatureActions = Collections.synchronizedList(new
-            ArrayList<>());
-    generation.getCreatures()
-            .forEach(
-                    creature -> {
-                      creatureActions.add(creature.tick(generation, foodHolder));
-                    });
-
-    handleCreatureActions(generation, foodHolder, creatureActions);
-    appState.generateFood();
-  }
+        return creatureActions;
+    }
 }

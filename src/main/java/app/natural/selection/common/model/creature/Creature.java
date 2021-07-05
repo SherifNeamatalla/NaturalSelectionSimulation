@@ -1,12 +1,12 @@
 package app.natural.selection.common.model.creature;
 
+import app.natural.selection.algorithm.configuration.AlgorithmParameters;
 import app.natural.selection.algorithm.controllers.implementations.defaultImpl.DefaultCreatureLogicHandler;
 import app.natural.selection.algorithm.controllers.interfaces.ICreatureLogicHandler;
-import app.natural.selection.common.model.position.Position;
 import app.natural.selection.common.model.food.Food;
 import app.natural.selection.common.model.food.FoodHolder;
-import app.natural.selection.common.model.generation.Generation;
-import app.natural.selection.algorithm.configuration.AlgorithmParameters;
+import app.natural.selection.common.model.population.Population;
+import app.natural.selection.common.model.position.Position;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -16,191 +16,192 @@ import java.util.UUID;
 
 public class Creature {
 
-  private final UUID id;
+    private final UUID id;
 
-  private Double energy;
+    private final Position position;
 
-  private MovingDirection horizontalMovingDirection;
+    private final CreatureProperties creatureProperties;
 
-  private MovingDirection verticalMovingDirection;
+    private final List<CreatureAction> takenActions;
 
-  private final Position position;
+    private final ICreatureLogicHandler creatureLogicHandler;
 
-  private final CreatureProperties creatureProperties;
+    private final Integer maxX;
 
-  private final List<CreatureAction> takenActions;
+    private final Integer maxY;
 
-  private final ICreatureLogicHandler creatureLogicHandler;
+    private final Creature parent1;
 
-  private final Integer maxX;
+    private final Creature parent2;
 
-  private final Integer maxY;
+    private final AlgorithmParameters algorithmParameters;
 
-  private final Creature parent1;
+    private final LocalDateTime birthDate;
 
-  private final Creature parent2;
+    private final Integer generation;
 
-  private final AlgorithmParameters algorithmParameters;
+    private Double energy;
 
-  private Integer foodCount;
+    private MovingDirection horizontalMovingDirection;
 
-  private LocalDateTime birthDate;
+    private MovingDirection verticalMovingDirection;
 
-  private LocalDateTime lastReproductionActionDate;
+    private Integer foodCount;
 
-  private final Integer generation;
-
-  public Creature(Creature parent1, Creature parent2) {
-    this.id = UUID.randomUUID();
-    this.position = new Position(parent1.getPosition());
-    this.creatureProperties = new CreatureProperties(parent1.getCreatureProperties(), parent2.getCreatureProperties());
-    this.takenActions = new ArrayList<>();
-    this.creatureLogicHandler = new DefaultCreatureLogicHandler();
-    this.energy = parent1.getSimulationConfiguration().getCreatureStaringEnergy().doubleValue();
-    this.horizontalMovingDirection = MovingDirection.STAY;
-    this.verticalMovingDirection = MovingDirection.STAY;
-    this.maxX = parent1.getMaxX();
-    this.maxY = parent1.getMaxY();
-    this.algorithmParameters = parent1.getSimulationConfiguration();
-    this.parent1 = parent1;
-    this.parent2 = parent2;
-    this.foodCount = 0;
-    this.birthDate = LocalDateTime.now();
-    this.lastReproductionActionDate = null;
-    this.generation = Math.max(parent1.getGeneration(), parent2.getGeneration()) + 1;
-  }
-
-  public Creature(AlgorithmParameters algorithmParameters) {
-    this.id = UUID.randomUUID();
-    this.position = new Position(algorithmParameters);
-    this.creatureProperties = new CreatureProperties(algorithmParameters);
-    this.takenActions = new ArrayList<>();
-    this.creatureLogicHandler = new DefaultCreatureLogicHandler();
-    this.energy = algorithmParameters.getCreatureStaringEnergy().doubleValue();
-    this.horizontalMovingDirection = MovingDirection.STAY;
-    this.verticalMovingDirection = MovingDirection.STAY;
-    this.maxX = algorithmParameters.getCanvasWidth();
-    this.maxY = algorithmParameters.getCanvasHeight();
-    this.algorithmParameters = algorithmParameters;
-    this.parent1 = null;
-    this.parent2 = null;
-    this.foodCount = 0;
-    this.birthDate = LocalDateTime.now();
-    this.lastReproductionActionDate = null;
-    this.generation = 0;
-  }
-
-  public AlgorithmParameters getSimulationConfiguration() {
-    return algorithmParameters;
-  }
+    private LocalDateTime lastReproductionActionDate;
 
 
-  public CreatureAction tick(Generation generation, FoodHolder foodHolder) {
-    return creatureLogicHandler.creatureTick(this, generation, foodHolder);
-  }
-
-  public Boolean isReadyToMate() {
-    Boolean ageConstraintValid = Math.abs(Duration.between(birthDate, LocalDateTime.now()).getSeconds())
-            >= creatureProperties.getReproductionRequiredAge();
-
-    Boolean foodConstraintValid = foodCount >= creatureProperties.getReproductionRequiredFoodCount();
-
-    Boolean coolDownConstraintValid = lastReproductionActionDate == null || Math.abs(Duration.between(lastReproductionActionDate,
-            LocalDateTime.now()).getSeconds()) >= creatureProperties.getReproductionCoolDownSeconds();
-
-    return ageConstraintValid && foodConstraintValid && coolDownConstraintValid;
-  }
-
-  public void move(
-          MovingDirection horizontalMovingDirection, MovingDirection verticalMovingDirection) {
-    this.horizontalMovingDirection = horizontalMovingDirection;
-    this.verticalMovingDirection = verticalMovingDirection;
-
-    move();
-  }
-
-  public void eatFood(Food food) {
-    energy = Math.min(energy + food.getNutritionValue(), 100);
-    foodCount++;
-  }
-
-  public void move() {
-    this.position.setX(
-            this.position.getX()
-                    + this.horizontalMovingDirection.intValue()
-                    * this.creatureProperties.getPixelsPerTick());
-    this.position.setY(
-            this.position.getY()
-                    + this.verticalMovingDirection.intValue()
-                    * this.creatureProperties.getPixelsPerTick());
-
-    if (position.getX() >= this.maxX - 100 || position.getX() <= 0) {
-      position.setX(Math.min(Math.max(0, position.getX()), this.maxX));
-      horizontalMovingDirection = MovingDirection.fromIntValue(-1 * horizontalMovingDirection.intValue());
+    public Creature(Creature parent1, Creature parent2) {
+        this.id = UUID.randomUUID();
+        this.position = new Position(parent1.getPosition());
+        this.creatureProperties = new CreatureProperties(parent1.getCreatureProperties(), parent2.getCreatureProperties());
+        this.takenActions = new ArrayList<>();
+        this.creatureLogicHandler = new DefaultCreatureLogicHandler();
+        this.energy = parent1.getSimulationConfiguration().getCreatureStaringEnergy().doubleValue();
+        this.horizontalMovingDirection = MovingDirection.STAY;
+        this.verticalMovingDirection = MovingDirection.STAY;
+        this.maxX = parent1.getMaxX();
+        this.maxY = parent1.getMaxY();
+        this.algorithmParameters = parent1.getSimulationConfiguration();
+        this.parent1 = parent1;
+        this.parent2 = parent2;
+        this.foodCount = 0;
+        this.birthDate = LocalDateTime.now();
+        this.lastReproductionActionDate = null;
+        this.generation = Math.max(parent1.getGeneration(), parent2.getGeneration()) + 1;
     }
 
-    if (position.getY() >= this.maxY - 100 || position.getY() <= 0) {
-      position.setY(Math.min(Math.max(0, position.getY()), this.maxY));
-
-      verticalMovingDirection = MovingDirection.fromIntValue(-1 * verticalMovingDirection.intValue());
+    public Creature(AlgorithmParameters algorithmParameters) {
+        this.id = UUID.randomUUID();
+        this.position = new Position(algorithmParameters);
+        this.creatureProperties = new CreatureProperties(algorithmParameters);
+        this.takenActions = new ArrayList<>();
+        this.creatureLogicHandler = new DefaultCreatureLogicHandler();
+        this.energy = algorithmParameters.getCreatureStaringEnergy().doubleValue();
+        this.horizontalMovingDirection = MovingDirection.STAY;
+        this.verticalMovingDirection = MovingDirection.STAY;
+        this.maxX = algorithmParameters.getCanvasWidth();
+        this.maxY = algorithmParameters.getCanvasHeight();
+        this.algorithmParameters = algorithmParameters;
+        this.parent1 = null;
+        this.parent2 = null;
+        this.foodCount = 0;
+        this.birthDate = LocalDateTime.now();
+        this.lastReproductionActionDate = null;
+        this.generation = 0;
     }
-  }
+
+    public AlgorithmParameters getSimulationConfiguration() {
+        return algorithmParameters;
+    }
 
 
-  public void mutate(Double mutationRate) {
-    creatureProperties.mutate(mutationRate, algorithmParameters);
-  }
+    public CreatureAction tick(Population population, FoodHolder foodHolder) {
+        return creatureLogicHandler.creatureTick(this, population, foodHolder);
+    }
 
-  public void mated() {
-    lastReproductionActionDate = LocalDateTime.now();
-  }
+    public Boolean isReadyToMate() {
+        Boolean ageConstraintValid = Math.abs(Duration.between(birthDate, LocalDateTime.now()).getSeconds())
+                >= creatureProperties.getReproductionRequiredAge();
 
-  public void decayEnergy() {
-    energy -= creatureProperties.getEnergyDecayPerTick();
-  }
+        Boolean foodConstraintValid = foodCount >= creatureProperties.getReproductionRequiredFoodCount();
 
-  public UUID getId() {
-    return id;
-  }
+        Boolean coolDownConstraintValid = lastReproductionActionDate == null || Math.abs(Duration.between(lastReproductionActionDate,
+                LocalDateTime.now()).getSeconds()) >= creatureProperties.getReproductionCoolDownSeconds();
 
-  public Position getPosition() {
-    return position;
-  }
+        return ageConstraintValid && foodConstraintValid && coolDownConstraintValid;
+    }
 
-  public CreatureProperties getCreatureProperties() {
-    return creatureProperties;
-  }
+    public void move(
+            MovingDirection horizontalMovingDirection, MovingDirection verticalMovingDirection) {
+        this.horizontalMovingDirection = horizontalMovingDirection;
+        this.verticalMovingDirection = verticalMovingDirection;
 
-  public List<CreatureAction> getTakenActions() {
-    return takenActions;
-  }
+        move();
+    }
 
-  public Double getEnergy() {
-    return energy;
-  }
+    public void eatFood(Food food) {
+        energy = Math.min(energy + food.getNutritionValue(), 100);
+        foodCount++;
+    }
 
-  public Integer getMaxX() {
-    return maxX;
-  }
+    public void move() {
+        this.position.setX(
+                this.position.getX()
+                        + this.horizontalMovingDirection.intValue()
+                        * this.creatureProperties.getPixelsPerTick());
+        this.position.setY(
+                this.position.getY()
+                        + this.verticalMovingDirection.intValue()
+                        * this.creatureProperties.getPixelsPerTick());
 
-  public Integer getMaxY() {
-    return maxY;
-  }
+        if (position.getX() >= this.maxX - 100 || position.getX() <= 0) {
+            position.setX(Math.min(Math.max(0, position.getX()), this.maxX));
+            horizontalMovingDirection = MovingDirection.fromIntValue(-1 * horizontalMovingDirection.intValue());
+        }
 
-  public Creature getParent1() {
-    return parent1;
-  }
+        if (position.getY() >= this.maxY - 100 || position.getY() <= 0) {
+            position.setY(Math.min(Math.max(0, position.getY()), this.maxY));
 
-  public Creature getParent2() {
-    return parent2;
-  }
+            verticalMovingDirection = MovingDirection.fromIntValue(-1 * verticalMovingDirection.intValue());
+        }
+    }
 
-  public Integer getFoodCount() {
-    return foodCount;
-  }
 
-  public Integer getGeneration() {
-    return generation;
-  }
+    public void mutate(Double mutationRate) {
+        creatureProperties.mutate(mutationRate, algorithmParameters);
+    }
+
+    public void mated() {
+        lastReproductionActionDate = LocalDateTime.now();
+    }
+
+    public void decayEnergy() {
+        energy -= creatureProperties.getEnergyDecayPerTick();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public CreatureProperties getCreatureProperties() {
+        return creatureProperties;
+    }
+
+    public List<CreatureAction> getTakenActions() {
+        return takenActions;
+    }
+
+    public Double getEnergy() {
+        return energy;
+    }
+
+    public Integer getMaxX() {
+        return maxX;
+    }
+
+    public Integer getMaxY() {
+        return maxY;
+    }
+
+    public Creature getParent1() {
+        return parent1;
+    }
+
+    public Creature getParent2() {
+        return parent2;
+    }
+
+    public Integer getFoodCount() {
+        return foodCount;
+    }
+
+    public Integer getGeneration() {
+        return generation;
+    }
 
 }

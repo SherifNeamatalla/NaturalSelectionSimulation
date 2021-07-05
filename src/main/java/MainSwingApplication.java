@@ -1,12 +1,12 @@
 import app.natural.selection.appcontroller.AppController;
-import app.natural.selection.appcontroller.config.AppInitConfig;
-import app.natural.selection.appcontroller.config.FrontendFramework;
+import app.natural.selection.appcontroller.configuration.AppInitialConfiguration;
+import app.natural.selection.appcontroller.configuration.FrontendFramework;
 
 public class MainSwingApplication {
 
   public static void main(String[] args) {
 
-    AppController appController = new AppController(new AppInitConfig(FrontendFramework.SWING, null));
+    AppController appController = new AppController(new AppInitialConfiguration(FrontendFramework.SWING, null));
     appController.launch();
   }
 }

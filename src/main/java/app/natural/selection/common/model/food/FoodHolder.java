@@ -7,24 +7,20 @@ import java.util.List;
 
 public class FoodHolder {
 
-  private List<Food> foodList;
+    private final List<Food> foodList;
 
-  public FoodHolder(AlgorithmParameters algorithmParameters) {
-    this.foodList = new ArrayList<>();
-    generateFood(algorithmParameters);
-  }
-
-  public void generateFood(AlgorithmParameters algorithmParameters) {
-    for (int i = 0; i < algorithmParameters.getFoodCount(); i++) {
-      this.foodList.add(new Food(algorithmParameters));
+    public FoodHolder(AlgorithmParameters algorithmParameters) {
+        this.foodList = new ArrayList<>();
+        generateFood(algorithmParameters);
     }
-  }
 
-  public List<Food> getFoodList() {
-    return foodList;
-  }
+    public void generateFood(AlgorithmParameters algorithmParameters) {
+        for (int i = 0; i < algorithmParameters.getFoodCount(); i++) {
+            this.foodList.add(new Food(algorithmParameters));
+        }
+    }
 
-  public void setFoodList(List<Food> foodList) {
-    this.foodList = foodList;
-  }
+    public List<Food> getFoodList() {
+        return foodList;
+    }
 }

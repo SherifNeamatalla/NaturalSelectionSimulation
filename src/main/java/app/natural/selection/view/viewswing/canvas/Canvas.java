@@ -3,7 +3,7 @@ package app.natural.selection.view.viewswing.canvas;
 import app.natural.selection.common.model.creature.Creature;
 import app.natural.selection.common.model.food.Food;
 import app.natural.selection.common.model.food.FoodHolder;
-import app.natural.selection.common.model.generation.Generation;
+import app.natural.selection.common.model.population.Population;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ import java.awt.*;
 public class Canvas extends JPanel {
 
   private FoodHolder foodHolder;
-  private Generation generation;
+  private Population population;
 
   public Canvas() {
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -23,9 +23,9 @@ public class Canvas extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     removeAll();
-    if (generation != null) {
+    if (population != null) {
       g.setColor(Color.WHITE);
-      for (Creature creature : generation.getCreatures()) {
+      for (Creature creature : population.getCreatures()) {
         g.fillOval(
             creature.getPosition().getX().intValue(),
             creature.getPosition().getY().intValue(),
@@ -45,8 +45,8 @@ public class Canvas extends JPanel {
     }
   }
 
-  public void draw(Generation generation, FoodHolder foodHolder) {
-    this.generation = generation;
+  public void draw(Population population, FoodHolder foodHolder) {
+    this.population = population;
     this.foodHolder = foodHolder;
     repaint();
   }

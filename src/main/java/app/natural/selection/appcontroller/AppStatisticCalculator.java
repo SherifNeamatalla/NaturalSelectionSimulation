@@ -3,7 +3,7 @@ package app.natural.selection.appcontroller;
 import app.natural.selection.appcontroller.model.SingleStatisticEntry;
 import app.natural.selection.appcontroller.model.Statistic;
 import app.natural.selection.common.model.creature.Creature;
-import app.natural.selection.common.model.generation.Generation;
+import app.natural.selection.common.model.population.Population;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,32 +13,32 @@ public class AppStatisticCalculator {
   public static void saveAppState() {
   }
 
-  public static void updateStatistic(Generation generation, Statistic statistic) {
-    if (generation == null || generation.getCreatures() == null || generation.getCreatures().size() == 0) return;
+  public static void updateStatistic(Population population, Statistic statistic) {
+    if (population == null || population.getCreatures() == null || population.getCreatures().size() == 0) return;
 
     SingleStatisticEntry<Double> pixelsPerTickStatisticEntry =
-            getSingleStatisticEntryDoubles(generation.getCreatures(),
-                    generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getPixelsPerTick()).collect(Collectors.toList()));
+            getSingleStatisticEntryDoubles(population.getCreatures(),
+                    population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getPixelsPerTick()).collect(Collectors.toList()));
 
     SingleStatisticEntry<Integer> sizePixelsStatisticEntry =
-            getSingleStatisticEntryIntegers(generation.getCreatures(),
-                    generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getSizePixels()).collect(Collectors.toList()));
+            getSingleStatisticEntryIntegers(population.getCreatures(),
+                    population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getSizePixels()).collect(Collectors.toList()));
 
     SingleStatisticEntry<Double> energyDecayPerTickStatisticEntry =
-            getSingleStatisticEntryDoubles(generation.getCreatures(),
-                    generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getEnergyDecayPerTick()).collect(Collectors.toList()));
+            getSingleStatisticEntryDoubles(population.getCreatures(),
+                    population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getEnergyDecayPerTick()).collect(Collectors.toList()));
 
-    SingleStatisticEntry<Integer> visionPixelsStatisticEntry = getSingleStatisticEntryIntegers(generation.getCreatures(),
-            generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getVisionPixels()).collect(Collectors.toList()));
+    SingleStatisticEntry<Integer> visionPixelsStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getVisionPixels()).collect(Collectors.toList()));
 
-    SingleStatisticEntry<Integer> reproductionCoolDownSecondsStatisticEntry = getSingleStatisticEntryIntegers(generation.getCreatures(),
-            generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionCoolDownSeconds()).collect(Collectors.toList()));
+    SingleStatisticEntry<Integer> reproductionCoolDownSecondsStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionCoolDownSeconds()).collect(Collectors.toList()));
 
-    SingleStatisticEntry<Integer> reproductionRequiredAgeStatisticEntry = getSingleStatisticEntryIntegers(generation.getCreatures(),
-            generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredAge()).collect(Collectors.toList()));
+    SingleStatisticEntry<Integer> reproductionRequiredAgeStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredAge()).collect(Collectors.toList()));
 
-    SingleStatisticEntry<Integer> reproductionRequiredFoodCountStatisticEntry = getSingleStatisticEntryIntegers(generation.getCreatures(),
-            generation.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredFoodCount()).collect(Collectors.toList()));
+    SingleStatisticEntry<Integer> reproductionRequiredFoodCountStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredFoodCount()).collect(Collectors.toList()));
 
 
     statistic.refreshValues(pixelsPerTickStatisticEntry,

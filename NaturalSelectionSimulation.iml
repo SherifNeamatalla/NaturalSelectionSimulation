@@ -19,5 +19,6 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:17-ea+13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:16" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:16" level="project" />
+    <orderEntry type="library" name="Maven: org.jfree:jfreechart:1.5.3" level="project" />
   </component>
 </module>

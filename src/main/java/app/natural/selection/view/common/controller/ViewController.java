@@ -53,4 +53,8 @@ public class ViewController {
   public void draw(AppState appState) {
     this.mainWindow.draw(appState);
   }
+
+    public void handleShowCreatureData() {
+    appController.handleShowCreatureData();
+    }
 }

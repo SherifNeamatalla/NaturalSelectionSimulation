@@ -24,7 +24,9 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
     List<Creature> creatureList = appState.getPopulation().getCreatures();
     List<Food> foodList = appState.getFoodHolder().getFoodList();
 
-    drawCreatures(creatureList);
+    Boolean showCreatureData = appState.getAppSettings().getShowCreatureData();
+
+    drawCreatures(creatureList, showCreatureData);
     drawFoods(foodList);
   }
 
@@ -49,16 +51,29 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
     getGraphicsContext2D().fillRect(0, 0, this.getWidth(), this.getHeight());
   }
 
-  private void drawCreatures(List<Creature> creatureList) {
+  private void drawCreatures(List<Creature> creatureList, Boolean showCreatureData) {
     GraphicsContext gc = getGraphicsContext2D();
-    creatureList.forEach(creature -> drawCreature(creature, gc));
+    creatureList.forEach(creature -> drawCreature(creature, gc, showCreatureData));
   }
 
-  private void drawCreature(Creature creature, GraphicsContext gc) {
+  private void drawCreature(Creature creature, GraphicsContext gc, Boolean showCreatureData) {
     if (creature.getEnergy() <= 0) gc.setFill(BLACK);
     else if (creature.getEnergy() < 10) gc.setFill(YELLOW);
     else if (creature.getEnergy() < 50) gc.setFill(ORANGE);
     else gc.setFill(SILVER);
+    if (showCreatureData) {
+      drawCreatureData(creature, gc);
+    }
+
+    gc.fillOval(
+            creature.getPosition().getX(),
+            creature.getPosition().getY(),
+            creature.getCreatureProperties().getSizePixels(),
+            creature.getCreatureProperties().getSizePixels());
+
+  }
+
+  private void drawCreatureData(Creature creature, GraphicsContext gc) {
     gc.fillText(
             ""
                     + String.format("%.2f", creature.getEnergy())
@@ -70,11 +85,6 @@ public class CanvasFx extends javafx.scene.canvas.Canvas {
                     + String.format("%.2f", creature.getCreatureProperties().getEnergyDecayPerTick()),
             creature.getPosition().getX() - 10,
             creature.getPosition().getY());
-    gc.fillOval(
-            creature.getPosition().getX(),
-            creature.getPosition().getY(),
-            creature.getCreatureProperties().getSizePixels(),
-            creature.getCreatureProperties().getSizePixels());
     gc.fillText(
             creature.getId().toString(),
             creature.getPosition().getX(),

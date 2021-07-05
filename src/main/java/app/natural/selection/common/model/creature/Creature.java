@@ -46,6 +46,8 @@ public class Creature {
 
     private Integer foodCount;
 
+    private Integer foodCountSinceLastReproduction;
+
     private Long lastReproductionActionTick;
 
 
@@ -64,6 +66,7 @@ public class Creature {
         this.parent1 = parent1;
         this.parent2 = parent2;
         this.foodCount = 0;
+        this.foodCountSinceLastReproduction = 0;
         this.tickBirthDate = currentTick;
         this.lastReproductionActionTick = null;
         this.generation = Math.max(parent1.getGeneration(), parent2.getGeneration()) + 1;
@@ -84,6 +87,7 @@ public class Creature {
         this.parent1 = null;
         this.parent2 = null;
         this.foodCount = 0;
+        this.foodCountSinceLastReproduction = 0;
         this.tickBirthDate = 0L;
         this.lastReproductionActionTick = null;
         this.generation = 0;
@@ -100,12 +104,12 @@ public class Creature {
 
     public Boolean isReadyToMate(Long currentTick) {
         Boolean ageConstraintValid = currentTick - tickBirthDate
-                >= (long) creatureProperties.getReproductionRequiredAge() * algorithmParameters.getTickPerSecond();
+                >= (long) creatureProperties.getReproductionRequiredAgeTicks() ;
 
-        Boolean foodConstraintValid = foodCount >= creatureProperties.getReproductionRequiredFoodCount();
+        Boolean foodConstraintValid = foodCountSinceLastReproduction >= creatureProperties.getReproductionRequiredFoodCount();
 
         Boolean coolDownConstraintValid = lastReproductionActionTick == null || currentTick - lastReproductionActionTick
-                >= (long) creatureProperties.getReproductionCoolDownSeconds() * algorithmParameters.getTickPerSecond();
+                >= creatureProperties.getReproductionCoolDownTicks();
 
         return ageConstraintValid && foodConstraintValid && coolDownConstraintValid;
     }
@@ -122,6 +126,7 @@ public class Creature {
     public void eatFood(Food food) {
         energy = Math.min(energy + food.getNutritionValue(), 100);
         foodCount++;
+        foodCountSinceLastReproduction++;
     }
 
     public void move(Position wantedPosition) {
@@ -168,6 +173,7 @@ public class Creature {
 
     public void mated(Long currentTick) {
         lastReproductionActionTick = currentTick;
+        foodCountSinceLastReproduction = 0;
     }
 
     public void decayEnergy() {

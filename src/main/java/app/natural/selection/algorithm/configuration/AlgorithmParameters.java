@@ -76,10 +76,10 @@ public class AlgorithmParameters {
 
         this.minRequiredMatingFoodCount = DEFAULT_MIN_REQUIRED_MATING_FOOD_COUNT;
         this.maxRequiredMatingFoodCount = DEFAULT_MAX_REQUIRED_MATING_FOOD_COUNT;
-        this.minRequiredMatingAgeSeconds = DEFAULT_MIN_REQUIRED_MATING_AGE_SECONDS;
-        this.maxRequiredMatingAgeSeconds = DEFAULT_MAX_REQUIRED_MATING_AGE_SECONDS;
-        this.minReproductionCoolDown = DEFAULT_MIN_REPRODUCTION_COOL_DOWN_SECONDS;
-        this.maxReproductionCoolDown = DEFAULT_MAX_REPRODUCTION_COOL_DOWN_SECONDS;
+        this.minRequiredMatingAgeSeconds = DEFAULT_MIN_REQUIRED_MATING_AGE_TICKS;
+        this.maxRequiredMatingAgeSeconds = DEFAULT_MAX_REQUIRED_MATING_AGE_TICKS;
+        this.minReproductionCoolDown = DEFAULT_MIN_REPRODUCTION_COOL_DOWN_TICKS;
+        this.maxReproductionCoolDown = DEFAULT_MAX_REPRODUCTION_COOL_DOWN_TICKS;
 
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
@@ -207,6 +207,10 @@ public class AlgorithmParameters {
     }
 
     public void increaseTickPerSecond() {
-        this.tickPerSecond *= 2;
+        if (this.tickPerSecond * 2 >= 960) {
+            this.tickPerSecond = 960;
+        } else {
+            this.tickPerSecond *= 2;
+        }
     }
 }

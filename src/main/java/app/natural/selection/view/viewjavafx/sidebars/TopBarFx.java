@@ -20,6 +20,8 @@ public class TopBarFx extends ToolBar {
 
   private static final String START_TEXT = "Start";
 
+  private static final String SHOW_CREATURE_DATA_TEXT = "Show Detail";
+
   private static final String STOP_TEXT = "Stop";
 
   private static final String PAUSE_TEXT = "Pause";
@@ -35,6 +37,8 @@ public class TopBarFx extends ToolBar {
   private TextField ticksPerSecondTextField;
 
   private TextField currentTickCountTextField;
+
+  private TextField tickSnapshotCountTextField;
 
   public TopBarFx(ViewController viewController) {
     setBackground(
@@ -59,6 +63,13 @@ public class TopBarFx extends ToolBar {
 
     currentTickCountTextField = createSingleTextField();
     getItems().add(currentTickCountTextField);
+
+    Label tickSnapshotCountLabel = createSingleLabel("Snapshot every n-ticks");
+    currentTickCountLabel.setPrefWidth(200);
+    getItems().add(tickSnapshotCountLabel);
+
+    tickSnapshotCountTextField = createSingleTextField();
+    getItems().add(tickSnapshotCountTextField);
   }
 
   private void addButtons(ViewController viewController) {
@@ -72,6 +83,9 @@ public class TopBarFx extends ToolBar {
     getItems().add(new Separator(Orientation.VERTICAL));
     getItems().add(new Separator(Orientation.VERTICAL));
     getItems().add(saveButton(viewController));
+    getItems().add(new Separator(Orientation.VERTICAL));
+    getItems().add(new Separator(Orientation.VERTICAL));
+    getItems().add(showCreatureDataButton(viewController));
   }
 
   private Button initButton(String text, EventHandler<MouseEvent> eventHandler) {
@@ -142,8 +156,18 @@ public class TopBarFx extends ToolBar {
             });
   }
 
+  private Button showCreatureDataButton(ViewController viewController) {
+    return initButton(
+            SHOW_CREATURE_DATA_TEXT,
+            (actionEvent) -> {
+              viewController.handleShowCreatureData();
+            });
+  }
+
+
   public void draw(AppState appState) {
     currentTickCountTextField.setText(appState.getCurrentTickCount().toString());
     ticksPerSecondTextField.setText(appState.getAlgorithmParameters().getTickPerSecond().toString());
+    tickSnapshotCountTextField.setText(appState.getAppSettings().getTickSnapshotCount().toString());
   }
 }

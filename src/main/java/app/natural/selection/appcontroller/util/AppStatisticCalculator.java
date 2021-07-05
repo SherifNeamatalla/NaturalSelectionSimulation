@@ -1,4 +1,4 @@
-package app.natural.selection.appcontroller;
+package app.natural.selection.appcontroller.util;
 
 import app.natural.selection.appcontroller.model.SingleStatisticEntry;
 import app.natural.selection.appcontroller.model.Statistic;
@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 
 public class AppStatisticCalculator {
 
-  public static void saveAppState() {
-  }
+
 
   public static void updateStatistic(Population population, Statistic statistic) {
     if (population == null || population.getCreatures() == null || population.getCreatures().size() == 0) return;
@@ -32,10 +31,10 @@ public class AppStatisticCalculator {
             population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getVisionPixels()).collect(Collectors.toList()));
 
     SingleStatisticEntry<Integer> reproductionCoolDownSecondsStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
-            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionCoolDownSeconds()).collect(Collectors.toList()));
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionCoolDownTicks()).collect(Collectors.toList()));
 
     SingleStatisticEntry<Integer> reproductionRequiredAgeStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
-            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredAge()).collect(Collectors.toList()));
+            population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredAgeTicks()).collect(Collectors.toList()));
 
     SingleStatisticEntry<Integer> reproductionRequiredFoodCountStatisticEntry = getSingleStatisticEntryIntegers(population.getCreatures(),
             population.getCreatures().stream().map(creature -> creature.getCreatureProperties().getReproductionRequiredFoodCount()).collect(Collectors.toList()));

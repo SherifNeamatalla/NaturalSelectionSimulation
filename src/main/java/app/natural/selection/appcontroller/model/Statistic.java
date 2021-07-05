@@ -29,6 +29,18 @@ public class Statistic {
         this.reproductionRequiredFoodCountStatisticEntry = reproductionRequiredFoodCountStatisticEntry;
     }
 
+    public Statistic createCopy() {
+        Statistic copy = new Statistic();
+        copy.pixelsPerTickStatisticEntry = pixelsPerTickStatisticEntry;
+        copy.sizePixelsStatisticEntry = sizePixelsStatisticEntry;
+        copy.energyDecayPerTickStatisticEntry = energyDecayPerTickStatisticEntry;
+        copy.visionPixelsStatisticEntry = visionPixelsStatisticEntry;
+        copy.reproductionCoolDownSecondsStatisticEntry = reproductionCoolDownSecondsStatisticEntry;
+        copy.reproductionRequiredAgeStatisticEntry = reproductionRequiredAgeStatisticEntry;
+        copy.reproductionRequiredFoodCountStatisticEntry = reproductionRequiredFoodCountStatisticEntry;
+        return copy;
+    }
+
     public SingleStatisticEntry<Double> getPixelsPerTickStatisticEntry() {
         return pixelsPerTickStatisticEntry;
     }

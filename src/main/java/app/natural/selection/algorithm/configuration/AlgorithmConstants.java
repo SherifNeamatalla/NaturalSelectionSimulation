@@ -12,10 +12,10 @@ public class AlgorithmConstants {
 
 
   public static final Integer DEFAULT_TICKS_PER_SECOND = 60;
-  public static final Integer DEFAULT_STARTING_POPULATION_COUNT = 5;
+  public static final Integer DEFAULT_STARTING_POPULATION_COUNT = 100;
 
-  public static final Integer DEFAULT_FOOD_FREQUENCY_TICKS = 100;
-  public static final Integer DEFAULT_FOOD_COUNT = 100;
+  public static final Integer DEFAULT_FOOD_FREQUENCY_TICKS = 300;
+  public static final Integer DEFAULT_FOOD_COUNT = 500;
 
   public static final Double DEFAULT_MAX_X_POSITION = 1024.0;
   public static final Double DEFAULT_MAX_Y_POSITION = 1024.0;
@@ -36,8 +36,8 @@ public class AlgorithmConstants {
 
   public static final Integer DEFAULT_MIN_REQUIRED_MATING_FOOD_COUNT = 5;
   public static final Integer DEFAULT_MAX_REQUIRED_MATING_FOOD_COUNT = 20;
-  public static final Integer DEFAULT_MIN_REQUIRED_MATING_AGE_SECONDS = 5;
-  public static final Integer DEFAULT_MAX_REQUIRED_MATING_AGE_SECONDS = 25;
-  public static final Integer DEFAULT_MIN_REPRODUCTION_COOL_DOWN_SECONDS = 10;
-  public static final Integer DEFAULT_MAX_REPRODUCTION_COOL_DOWN_SECONDS = 45;
+  public static final Integer DEFAULT_MIN_REQUIRED_MATING_AGE_TICKS = 1000;
+  public static final Integer DEFAULT_MAX_REQUIRED_MATING_AGE_TICKS = 3000;
+  public static final Integer DEFAULT_MIN_REPRODUCTION_COOL_DOWN_TICKS = 1000;
+  public static final Integer DEFAULT_MAX_REPRODUCTION_COOL_DOWN_TICKS = 3000;
 }

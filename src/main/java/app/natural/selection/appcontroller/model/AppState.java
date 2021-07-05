@@ -2,10 +2,14 @@ package app.natural.selection.appcontroller.model;
 
 import app.natural.selection.algorithm.configuration.AlgorithmConfiguration;
 import app.natural.selection.algorithm.configuration.AlgorithmParameters;
+import app.natural.selection.appcontroller.configuration.AppSettings;
 import app.natural.selection.appcontroller.logger.AppLogger;
 import app.natural.selection.common.model.food.FoodHolder;
 import app.natural.selection.common.model.population.Population;
 import app.natural.selection.view.common.configuration.ViewConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppState {
 
@@ -21,9 +25,13 @@ public class AppState {
 
     private final ViewConfiguration viewConfiguration;
 
+    private final List<Statistic> snapshotStatistics;
+
     private Long totalTicks;
 
     private Long lastTickGeneratingFood;
+
+    private AppSettings appSettings;
 
 
     public AppState() {
@@ -32,9 +40,11 @@ public class AppState {
         this.viewConfiguration = new ViewConfiguration();
         this.algorithmParameters = new AlgorithmParameters(viewConfiguration.getCanvasHeight(), viewConfiguration.getCanvasWidth());
         this.algorithmConfiguration = new AlgorithmConfiguration();
+        this.appSettings = new AppSettings();
         this.statistic = new Statistic();
         this.population = new Population(this.algorithmParameters);
         this.foodHolder = new FoodHolder(this.algorithmParameters);
+        this.snapshotStatistics = new ArrayList<>();
     }
 
     // Generates food only if it's the right time to do so using simulationConfiguration.foodFrequency
@@ -76,11 +86,24 @@ public class AppState {
         return totalTicks;
     }
 
-    public void incrementTickCount() {
+    public void tick() {
         this.totalTicks++;
+
+        if (totalTicks % appSettings.getTickSnapshotCount() == 0) {
+            AppLogger.logMessage("Taking snapshot at tick: " + totalTicks);
+            this.snapshotStatistics.add(statistic.createCopy());
+        }
     }
 
     public Long getCurrentTickCount() {
         return totalTicks;
+    }
+
+    public AppSettings getAppSettings() {
+        return appSettings;
+    }
+
+    public List<Statistic> getSnapshotStatistics() {
+        return snapshotStatistics;
     }
 }

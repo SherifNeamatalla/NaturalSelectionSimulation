@@ -13,11 +13,11 @@ public class CreatureProperties {
 
   private Integer visionPixels;
 
-  private Integer reproductionCoolDownSeconds;
+  private Integer reproductionCoolDownTicks;
 
   private Integer reproductionRequiredFoodCount;
 
-  private Integer reproductionRequiredAge;
+  private Integer reproductionRequiredAgeTicks;
 
   public CreatureProperties(AlgorithmParameters algorithmParameters) {
     this.pixelsPerTick =
@@ -40,7 +40,7 @@ public class CreatureProperties {
                     algorithmParameters.getMinVisionPixels(),
                     algorithmParameters.getMaxVisionPixels());
 
-    this.reproductionCoolDownSeconds =
+    this.reproductionCoolDownTicks =
             RandomNumberGenerator.generateRandomInteger(
                     algorithmParameters.getMinReproductionCoolDown(),
                     algorithmParameters.getMaxReproductionCoolDown());
@@ -50,7 +50,7 @@ public class CreatureProperties {
                     algorithmParameters.getMinRequiredMatingFoodCount(),
                     algorithmParameters.getMaxRequiredMatingFoodCount());
 
-    this.reproductionRequiredAge =
+    this.reproductionRequiredAgeTicks =
             RandomNumberGenerator.generateRandomInteger(
                     algorithmParameters.getMinRequiredMatingAgeSeconds(),
                     algorithmParameters.getMaxRequiredMatingAgeSeconds());
@@ -80,8 +80,8 @@ public class CreatureProperties {
 
     inheritFromParentRandom = RandomNumberGenerator.generateRandomInteger(1, 2);
 
-    this.reproductionCoolDownSeconds = inheritFromParentRandom == 1 ? creatureProperties1.getReproductionCoolDownSeconds() :
-            inheritFromParentRandom == 2 ? creatureProperties2.getReproductionCoolDownSeconds() : null;
+    this.reproductionCoolDownTicks = inheritFromParentRandom == 1 ? creatureProperties1.getReproductionCoolDownTicks() :
+            inheritFromParentRandom == 2 ? creatureProperties2.getReproductionCoolDownTicks() : null;
 
     inheritFromParentRandom = RandomNumberGenerator.generateRandomInteger(1, 2);
 
@@ -90,8 +90,8 @@ public class CreatureProperties {
 
     inheritFromParentRandom = RandomNumberGenerator.generateRandomInteger(1, 2);
 
-    this.reproductionRequiredAge = inheritFromParentRandom == 1 ? creatureProperties1.getReproductionRequiredAge() :
-            inheritFromParentRandom == 2 ? creatureProperties2.getReproductionRequiredAge() : null;
+    this.reproductionRequiredAgeTicks = inheritFromParentRandom == 1 ? creatureProperties1.getReproductionRequiredAgeTicks() :
+            inheritFromParentRandom == 2 ? creatureProperties2.getReproductionRequiredAgeTicks() : null;
 
 
   }
@@ -101,8 +101,8 @@ public class CreatureProperties {
     return reproductionRequiredFoodCount;
   }
 
-  public Integer getReproductionRequiredAge() {
-    return reproductionRequiredAge;
+  public Integer getReproductionRequiredAgeTicks() {
+    return reproductionRequiredAgeTicks;
   }
 
   public Double getPixelsPerTick() {
@@ -121,8 +121,8 @@ public class CreatureProperties {
     return visionPixels;
   }
 
-  public Integer getReproductionCoolDownSeconds() {
-    return reproductionCoolDownSeconds;
+  public Integer getReproductionCoolDownTicks() {
+    return reproductionCoolDownTicks;
   }
 
   public void mutate(Double mutationRate, AlgorithmParameters algorithmParameters) {
@@ -138,7 +138,7 @@ public class CreatureProperties {
 
     if (probability <= mutationRate) {
       this.energyDecayPerTick = RandomNumberGenerator.generateRandomDouble(algorithmParameters.getMinEnergyDecayPerTick(),
-              algorithmParameters.getMaxEnergyDecayPerTick()) + RandomNumberGenerator.generateRandomDouble(-5.0, 5.0);
+              algorithmParameters.getMaxEnergyDecayPerTick()) + RandomNumberGenerator.generateRandomDouble(-0.1, 0.1);
 
       if (energyDecayPerTick <= 0) {
         energyDecayPerTick = algorithmParameters.getMinEnergyDecayPerTick();
@@ -162,7 +162,7 @@ public class CreatureProperties {
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.reproductionCoolDownSeconds = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinReproductionCoolDown(),
+      this.reproductionCoolDownTicks = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinReproductionCoolDown(),
               algorithmParameters.getMaxReproductionCoolDown()) + RandomNumberGenerator.generateRandomInteger(-5, 5);
     }
 
@@ -176,7 +176,7 @@ public class CreatureProperties {
     probability = RandomNumberGenerator.generateRandomDouble(0.0, 1.0);
 
     if (probability <= mutationRate) {
-      this.reproductionRequiredAge = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinRequiredMatingAgeSeconds(),
+      this.reproductionRequiredAgeTicks = RandomNumberGenerator.generateRandomInteger(algorithmParameters.getMinRequiredMatingAgeSeconds(),
               algorithmParameters.getMaxRequiredMatingAgeSeconds()) + RandomNumberGenerator.generateRandomInteger(-5, 5);
     }
   }
